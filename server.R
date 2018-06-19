@@ -31,18 +31,32 @@ shinyServer(function(input, output, session) {
     read.csv(inFile$datapath, stringsAsFactors=F)
   })
   
-  output$dependent <- renderUI({
+  output$dependent1 <- renderUI({
     df <- filedata()
     if (is.null(df)) return(NULL)
     items=names(df)
     names(items)=items
-    selectInput('dependent','Candidate data:',items, selected='')
+    selectInput('dependent1','Candidate 1 data:',items, selected='')
   })
   
-  output$candName <- renderUI({
+  output$candName1 <- renderUI({
     df <- filedata()
     if (is.null(df)) return(NULL)
-    textInput('candidate', 'Name of candidate', '')
+    textInput('candidate1', 'Name of candidate 1:', '')
+  })
+  
+  output$dependent2 <- renderUI({
+    df <- filedata()
+    if (is.null(df)) return(NULL)
+    items=names(df)
+    names(items)=items
+    selectInput('dependent2','Candidate 2 data:',items, selected='')
+  })
+  
+  output$candName2 <- renderUI({
+    df <- filedata()
+    if (is.null(df)) return(NULL)
+    textInput('candidate2', 'Name of candidate 2:', '')
   })
   
   
@@ -81,9 +95,8 @@ shinyServer(function(input, output, session) {
   
   ## run models
   
-  model <- eventReactive(input$action, {
-    
-    df <- filedata()[,c(input$independent, input$dependent, input$tot.votes)]
+  test_model <- function(independent, dependent, tot.votes, candidate){
+    df <- filedata()[,c(independent, dependent, tot.votes)]
     names(df) <- c('x', 'y', 'z')
     
     # homogeneous precincts
@@ -125,11 +138,11 @@ shinyServer(function(input, output, session) {
                             ger$coefficients[1]+ger$coefficients[2], 
                             ei.out$ei.minority[1]/100,
                             ei.out$ei.minority[2]/100))
-    row.names(edf.t) <- c(input$candidate, 'Homogeneous precincts', 'Goodman ER', 'Ecol Inf', 'EI.se')
+    row.names(edf.t) <- c(candidate, 'Homogeneous precincts', 'Goodman ER', 'Ecol Inf', 'EI.se')
     
     # goodman plot
     gr.plot <- ggplot(df, aes(x=x,y=y)) + 
-      xlab(input$independent) + ylab(input$dependent) +
+      xlab(independent) + ylab(dependent) +
       geom_smooth(method='lm', se=T, colour='black', fullrange=TRUE) +
       scale_x_continuous(expand=c(0,0), limits=c(0,1)) +
       scale_y_continuous(expand=c(0,0), limits=c(-1.5,1.5)) +
@@ -140,7 +153,7 @@ shinyServer(function(input, output, session) {
       scale_color_manual('Homogeneous precincts', breaks=c(0,1), values=c('Gray', 'Red'), labels=c('No', paste('Most extreme ', input$slider,'%', sep=''))) +
       geom_hline(yintercept=0.5, linetype=2, colour='lightgray') +
       theme_bw() + ggtitle("Goodman's Ecological Regression") +
-      xlab(paste('% population ', input$racename, sep='')) + ylab(paste('% vote for ', input$candidate, sep=''))
+      xlab(paste('% population ', input$racename, sep='')) + ylab(paste('% vote for ', candidate, sep=''))
     
     # ei table
     ei.table <- as.data.frame(t(edf.t))
@@ -162,7 +175,7 @@ shinyServer(function(input, output, session) {
     ei.plot <- ggplot(ei.plot.df, aes(x=ei.est, y=1, col=as.factor(race))) +
       geom_hline(yintercept=1, col='black') +
       geom_point(size=6, shape=3) +
-      ylab('') + xlab(paste('Support for candidate ', input$candidate, sep='')) +
+      ylab('') + xlab(paste('Support for candidate ', candidate, sep='')) +
       scale_x_continuous(limits=c(-.25,1.25)) +
       scale_y_continuous(limits=c(0,2), breaks=c(0,0.5,1,1.5,2), labels=c('','','','','')) +
       scale_color_manual('Race', values=c('gray40', 'midnightblue'), labels=c(paste('All but ', input$racename, sep=''), input$racename)) +
@@ -170,11 +183,19 @@ shinyServer(function(input, output, session) {
       theme_bw() + ggtitle('Ecological Inference')
     
     
-    list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot)      
+    list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
+  }
+  
+  model1 <- eventReactive(input$action, {
+    test1 <- test_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
   })    
   
+  model2 <- eventReactive(input$action, {
+    test2 <- test_model(input$independent, input$dependent2, input$tot.votes, input$candidate2)
+  })     
+  
   observeEvent(input$action, {
-    output$goodman <- renderPlot({
+    output$goodman1 <- renderPlot({
       
       #withProgress(message='Running EI: Maximizing likelihood...importance sampling.',
       #             detail= 'This process may take several minutes...', value=4, {
@@ -184,23 +205,38 @@ shinyServer(function(input, output, session) {
       #               }
       #             })
       
-      model()$gr.plot
+      model1()$gr.plot
+    })
+  })
+  
+  observeEvent(input$action, {
+    output$goodman2 <- renderPlot({
+      
+      #withProgress(message='Running EI: Maximizing likelihood...importance sampling.',
+      #             detail= 'This process may take several minutes...', value=4, {
+      #               for(i in 1:10){
+      #                 incProgress(1/10)
+      #                 Sys.sleep(20)
+      #               }
+      #             })
+      
+      model2()$gr.plot
     })
   })
   
   observeEvent(input$action, {
     output$est <- renderTable({
       
-      model()$ei.table
+      model1()$ei.table
     }, align='c', digits=3)
   })
   
   observeEvent(input$action, {
     output$ei.bounds <- renderPlot({
       
-      model()$ei.plot
+      model1()$ei.plot
       
-    }, width=750, height=200)
+    }, width=650, height=200)
   })
   
   observeEvent(input$action,{

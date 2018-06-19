@@ -19,8 +19,11 @@ dashboardPage(
                 '.csv')
                 ),
                             
-      uiOutput('dependent'),
-      uiOutput('candName'),
+      uiOutput('dependent1'),
+      uiOutput('candName1'),
+        tags$hr(),
+      uiOutput('dependent2'),
+      uiOutput('candName2'),
         tags$hr(),
       uiOutput('independent'),
       uiOutput('raceVar'),
@@ -37,7 +40,7 @@ dashboardPage(
     fluidRow(column(width=3,
            
            box(
-             width=NULL, height='380px',
+             width=NULL, height=NULL,
              title = 'Instructions', status='primary', solidHeader=TRUE,
              '1. Upload CSV file on the left.',
              tags$br(),
@@ -55,7 +58,7 @@ dashboardPage(
            ),
            
            box(
-             width=NULL, height='150px', status='info',
+             width=NULL, height=NULL, status='info',
              #title='Resources', 
              tags$h6('R pkgs: ', 
                      a('ei |', href='https://cran.r-project.org/web/packages/ei/index.html'), 
@@ -85,7 +88,7 @@ dashboardPage(
              tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
              tabPanel('Data', tableOutput('ei.compare')),
              tabPanel('Figures', htmlOutput("est_expl"), withSpinner(tableOutput('est')), 
-                      htmlOutput("goodman_expl"), plotOutput('goodman'), 
+                      htmlOutput("goodman_expl"), plotOutput('goodman1'), plotOutput('goodman2'),
                       htmlOutput("bounds_expl"), plotOutput('ei.bounds'))
                 )
           )
