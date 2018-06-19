@@ -1,0 +1,10 @@
+---
+title: "report"
+output: pdf_document
+---
+
+# Homogeneous Precincts:
+
+# Goodman's Ecological Regression:
+
+# Ecological Inference:

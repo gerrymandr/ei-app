@@ -81,7 +81,7 @@ dashboardPage(
     ),
     
     column(width=9,
-           
+           downloadButton('report', 'Download Report'),
            tabBox(
              width=NULL, side='right', height='625px',
              selected='Figures',

@@ -260,4 +260,23 @@ shinyServer(function(input, output, session) {
   output$ei.compare <- renderTable({
     filedata()
   })
+  
+  output$report <- downloadHandler(
+    filename = "report.pdf",
+    content = function(file) {
+      
+      #copy report to temporary file
+      tempReport <- file.path(tempdir(), "report.Rmd")
+      file.copy("report.Rmd", tempReport, overwrite = TRUE)
+      
+      # Set up parameters to pass to Rmd document
+      params <- c(2, 3, 4)
+      
+      # Knit the document, passing in the `params` list
+      rmarkdown::render(tempReport, output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
+    }
+  )
 })
