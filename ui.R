@@ -84,7 +84,9 @@ dashboardPage(
              selected='Figures',
              tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
              tabPanel('Data', tableOutput('ei.compare')),
-             tabPanel('Figures', withSpinner(tableOutput('est')), plotOutput('goodman'), plotOutput('ei.bounds'))
+             tabPanel('Figures', htmlOutput("est_expl"), withSpinner(tableOutput('est')), 
+                      htmlOutput("goodman_expl"), plotOutput('goodman'), 
+                      htmlOutput("bounds_expl"), plotOutput('ei.bounds'))
                 )
           )
       )

@@ -203,6 +203,23 @@ shinyServer(function(input, output, session) {
     }, width=750, height=200)
   })
   
+  observeEvent(input$action,{
+    output$est_expl <- renderUI({
+      HTML(paste("First, we compare predictions from three different \n models for",input$dependent,
+                 "given demographic and total vote data.", "<br/>","<br/>"))
+    })
+    
+    
+    output$goodman_expl <- renderUI({ 
+      HTML(paste("<br/>","Next, we plot votes for",input$dependent, "against", input$independent,
+                 "according to Goodman's regression predictions","<br/>","<br/>"))
+    })
+    
+    output$bounds_expl <- renderUI({ 
+      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$independent,
+                 "with credible intervals.","<br/>","<br/>"))
+    })
+  })
   
   output$ei.compare <- renderTable({
     filedata()
