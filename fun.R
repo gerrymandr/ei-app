@@ -1,17 +1,3 @@
----
-title: "Ecological Inference Report"
-output: pdf_document
-params:
-    file1: "hello"
-    independent: NA
-    dependent1: NA
-    tot.votes: NA
-    candidate1: NA
----
-
-
-```{r, echo = F}
-#Getting the run_model function
 run_model <- function(independent, dependent, tot.votes, candidate, input_slider, racename){
   # Function that generates the table, goodman plot, and EI metric (with confidence plot), given variables
   
@@ -104,21 +90,3 @@ run_model <- function(independent, dependent, tot.votes, candidate, input_slider
   
   list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
 }
-
-```
-
-# Homogeneous Precincts:
-```{r echo = FALSE}
-library(knitr)
-
-  if (is.null(params$file1)){
-    return(NULL)}
-  fileData <-read.csv(params$file1$datapath, stringsAsFactors=F)
-  kable(fileData, caption = "CSV Data")
-
-```
-
-
-# Goodman's Ecological Regression:
-
-# Ecological Inference:
