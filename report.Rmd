@@ -111,6 +111,8 @@ run_model <- function(independent, dependent, tot.votes, candidate, input_slider
 
 ```
 
+First, we compare predictions from three different models for `r params$candidate1` vote share given demographic and total vote data.  
+=======
 
 # Homogeneous Precincts:
 ```{r echo = FALSE}
