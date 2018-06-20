@@ -23,7 +23,7 @@ shinyServer(function(input, output, session) {
     tagList(tags$p(style='font-size: 11px;', url3))
   })
   
-  filedata <- reactive({
+  filedata <- reactive({ # Take in file
     req(input$file1) # require that the input is available
     inFile <- input$file1
     if (is.null(inFile)){
@@ -31,7 +31,7 @@ shinyServer(function(input, output, session) {
     read.csv(inFile$datapath, stringsAsFactors=F)
   })
   
-  output$dependent1 <- renderUI({
+  output$dependent1 <- renderUI({ #Prompt for candidate 1 data
     df <- filedata()
     if (is.null(df)) return(NULL)
     items=names(df)
@@ -39,13 +39,13 @@ shinyServer(function(input, output, session) {
     selectInput('dependent1','Candidate 1 data:',items, selected='')
   })
   
-  output$candName1 <- renderUI({
+  output$candName1 <- renderUI({ #Prompt for candidate 1 name
     df <- filedata()
     if (is.null(df)) return(NULL)
     textInput('candidate1', 'Name of candidate 1:', '')
   })
   
-  output$dependent2 <- renderUI({
+  output$dependent2 <- renderUI({ #Prompt for candidate 2 data
     df <- filedata()
     if (is.null(df)) return(NULL)
     items=names(df)
@@ -53,14 +53,14 @@ shinyServer(function(input, output, session) {
     selectInput('dependent2','Candidate 2 data:',items, selected='')
   })
   
-  output$candName2 <- renderUI({
+  output$candName2 <- renderUI({ #Prompt for candidate 2 name
     df <- filedata()
     if (is.null(df)) return(NULL)
     textInput('candidate2', 'Name of candidate 2:', '')
   })
   
   
-  output$independent <- renderUI({
+  output$independent <- renderUI({ #Prompt for demographic data
     df <- filedata()
     if (is.null(df)) return(NULL)
     items=names(df)
