@@ -187,7 +187,8 @@ shinyServer(function(input, output, session) {
     list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
   }
   
-
+  # Note: the same output cannot be called wtice in R Shiny, so there are duplicate copies below of
+  # outputs in order to generate tables, plots, and explanations for each candidate tab
   model1 <- eventReactive(input$action, {
     # runs model on candidate 1
     run_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
@@ -276,13 +277,11 @@ shinyServer(function(input, output, session) {
       #copy report to temporary file
       tempReport <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
-      
-      # Set up parameters to pass to Rmd document
-      params <- c(2, 3, 4)
+
       
       # Knit the document, passing in the `params` list
       rmarkdown::render(tempReport, output_file = file,
-                        params = params,
+                        params = list(goodman1 = "west"),
                         envir = new.env(parent = globalenv())
       )
     }

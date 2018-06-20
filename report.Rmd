@@ -1,10 +1,14 @@
 ---
 title: "Ecological Inference Report"
 output: pdf_document
+params:
+    goodman1: "east"
 ---
 
 # Homogeneous Precincts:
-
+```{r}
+params$goodman1
+```
 
 
 # Goodman's Ecological Regression:
