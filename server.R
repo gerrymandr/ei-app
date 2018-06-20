@@ -272,6 +272,8 @@ shinyServer(function(input, output, session) {
   observeEvent(input$action, {
   output$report <- downloadHandler(
     filename = "report.pdf",
+    
+    
     content = function(file) {
       
       #copy report to temporary file
@@ -281,7 +283,12 @@ shinyServer(function(input, output, session) {
       
       # Knit the document, passing in the `params` list
       rmarkdown::render(tempReport, output_file = file,
-                        params = list(goodman1 = "west"),
+                        params = list(goodman1 = "west",
+                                      file1 = input$file1,
+                                      independent = input$independent, 
+                                      dependent1 = input$dependent1, 
+                                      tot.votes = input$tot.votes, 
+                                      candidate1 = input$candidate1),
                         envir = new.env(parent = globalenv())
       )
     }

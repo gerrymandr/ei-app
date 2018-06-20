@@ -3,11 +3,22 @@ title: "Ecological Inference Report"
 output: pdf_document
 params:
     goodman1: "east"
+    file1: "hello"
+    independent: NA
+    dependent1: NA
+    tot.votes: NA
+    candidate1: NA
 ---
 
 # Homogeneous Precincts:
-```{r}
-params$goodman1
+```{r echo = FALSE}
+library(knitr)
+
+  if (is.null(params$file1)){
+    return(NULL)}
+  fileData <-read.csv(params$file1$datapath, stringsAsFactors=F)
+  kable(fileData, caption = "CSV Data")
+
 ```
 
 
