@@ -187,13 +187,7 @@ shinyServer(function(input, output, session) {
     list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
   }
   
-<<<<<<< HEAD
-  ## @knitr model1
-=======
-  "Note: the same output cannot be called twice in R Shiny, so there are duplicate copies below of 
-  all outputs in order to generate tables, plots, and explanations for each candidate tab. "
-  
->>>>>>> 6f49ecd9be87795a7e050c3947745f595adb0a2d
+
   model1 <- eventReactive(input$action, {
     # runs model on candidate 1
     run_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
@@ -208,11 +202,6 @@ shinyServer(function(input, output, session) {
   observeEvent(input$action, {
     # generates goodman plots for candidates 1 and 2
     output$goodman1 <- renderPlot({
-<<<<<<< HEAD
-      
-      
-=======
->>>>>>> 6f49ecd9be87795a7e050c3947745f595adb0a2d
       model1()$gr.plot
     })
     output$goodman2 <- renderPlot({
