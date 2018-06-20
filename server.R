@@ -228,31 +228,31 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$action,{
     output$est_expl1 <- renderUI({
-      HTML(paste("First, we compare predictions from three different \n models for",input$dependent,
-                 "given demographic and total vote data.", "<br/>","<br/>"))
+      HTML(paste("First, we compare predictions from three different models for",input$candidate1,
+                 "'s vote share given demographic and total vote data.", "<br/>","<br/>"))
     })
     output$est_expl2 <- renderUI({
-      HTML(paste("First, we compare predictions from three different \n models for",input$dependent,
-                 "given demographic and total vote data.", "<br/>","<br/>"))
+      HTML(paste("First, we compare predictions from three different models for",input$candidate2,
+                 "'s vote share given demographic and total vote data.", "<br/>","<br/>"))
     })
     
     
     output$goodman_expl1 <- renderUI({ 
-      HTML(paste("<br/>","Next, we plot votes for",input$dependent, "against", input$independent,
-                 "according to Goodman's regression predictions","<br/>","<br/>"))
+      HTML(paste("<br/>","Next, we plot votes for", input$candidate1, "by the proportion of the population that is", 
+                 input$racename, "according to Goodman's regression predictions.","<br/>","<br/>"))
     })
     output$goodman_expl2 <- renderUI({ 
-      HTML(paste("<br/>","Next, we plot votes for",input$dependent, "against", input$independent,
-                 "according to Goodman's regression predictions","<br/>","<br/>"))
+      HTML(paste("<br/>","Next, we plot votes for", input$candidate2, "by the proportion of the population that is", 
+                 input$racename, "according to Goodman's regression predictions.","<br/>","<br/>"))
     })
     
     output$bounds_expl1 <- renderUI({ 
-      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$independent,
-                 "with credible intervals.","<br/>","<br/>"))
+      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate1, "'s vote share and plot them with credible intervals.",
+       "If the intervals overlap, we cannot conclude that there was racially polarized voting for", input$candidate2,".","<br/>","<br/>"))
     })
     output$bounds_expl2 <- renderUI({ 
-      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$independent,
-                 "with credible intervals.","<br/>","<br/>"))
+      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate2,"'s vote share and plot them with credible intervals.",
+        "If the intervals overlap, we cannot conclude that there was racially polarized voting for", input$candidate2,".","<br/>","<br/>"))
     })
   })
   
