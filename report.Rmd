@@ -111,6 +111,15 @@ run_model <- function(independent, dependent, tot.votes, candidate, input_slider
 
 ```
 
+
+
+```{r, echo = F, results = "hide"}
+#run the models
+model_1 <- run_model(independent, dependent1, tot.votes, candidate1, input_slider, racename)
+model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slider, racename)
+```
+
+
 # Homogeneous Precincts:
 ```{r echo = FALSE}
 library(knitr)
