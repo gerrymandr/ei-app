@@ -286,8 +286,12 @@ shinyServer(function(input, output, session) {
                         params = list(file1 = input$file1,
                                       independent = input$independent, 
                                       dependent1 = input$dependent1, 
+                                      dependent2 = input$dependent2,
                                       tot.votes = input$tot.votes, 
-                                      candidate1 = input$candidate1),
+                                      candidate1 = input$candidate1,
+                                      candidate2 = input$candidate2,
+                                      input_slider = input$slider,
+                                      racename = input$racename),
                         envir = new.env(parent = globalenv())
       )
     }

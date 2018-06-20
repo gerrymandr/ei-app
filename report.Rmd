@@ -5,8 +5,12 @@ params:
     file1: "hello"
     independent: NA
     dependent1: NA
+    dependent2: NA
     tot.votes: NA
     candidate1: NA
+    candidate2: NA
+    input_slider: NA
+    racename: NA
 ---
 
 
