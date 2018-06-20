@@ -41,12 +41,11 @@ dashboardPage(
            
            box(
              width=NULL, height=NULL,
-             title = 'Instructions', status='primary', solidHeader=TRUE,
-             '1. Upload CSV file on the left.',
-             tags$br(),
-             '(Code variables 0 to 1)',
+             title = 'Instructions', status='primary', solidHeader=TRUE, 'Use this tool to analyze election results for racially polarized voting.',
              tags$br(), tags$br(),
-             '2. Select the variables of interest.',
+             '1. Upload CSV file containing vote counts and demographic information for your election and region of interest.',
+             tags$br(), tags$br(),
+             '2. Select the relevant columns from your dataset and input category names.',
              tags$br(), tags$br(),
              '3. Adjust the slider to select homogeneous precinct threshold.',
              tags$br(), '(by % of precincts in sample)',
@@ -83,13 +82,16 @@ dashboardPage(
     column(width=9,
            downloadButton('report', 'Download Report'),
            tabBox(
-             width=NULL, side='right', height='625px',
-             selected='Figures',
+             width=NULL, side='right', height=NULL,
+             selected='Candidate 1 Figures',
              tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
              tabPanel('Data', tableOutput('ei.compare')),
-             tabPanel('Figures', htmlOutput("est_expl"), withSpinner(tableOutput('est')), 
-                      htmlOutput("goodman_expl"), plotOutput('goodman1'), plotOutput('goodman2'),
-                      htmlOutput("bounds_expl"), plotOutput('ei.bounds'))
+             tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')), 
+                      htmlOutput("goodman_expl2"), plotOutput('goodman2'),
+                      htmlOutput("bounds_expl2"), plotOutput('ei.bounds2')),
+             tabPanel('Candidate 1 Figures', htmlOutput("est_expl1"), withSpinner(tableOutput('est1')),
+                      htmlOutput("goodman_expl1"), plotOutput('goodman1'),
+                      htmlOutput("bounds_expl1"), plotOutput('ei.bounds1'))
                 )
           )
       )
