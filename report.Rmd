@@ -11,6 +11,8 @@ params:
     candidate2: NA
     input_slider: NA
     racename: NA
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -111,21 +113,16 @@ run_model <- function(independent, dependent, tot.votes, candidate, input_slider
 
 ```
 
-First, we compare predictions from three different models for `r params$candidate1` vote share given demographic and total vote data.  
-=======
-
-# Homogeneous Precincts:
 ```{r echo = FALSE}
 library(knitr)
 
   if (is.null(params$file1)){
     return(NULL)}
   fileData <-read.csv(params$file1$datapath, stringsAsFactors=F)
-  kable(fileData, caption = "CSV Data")
+  #kable(fileData, caption = "CSV Data")
 
   #need to figure out how to remove kable and still print output
 ```
-
 
 ```{r, echo = F, results = "hide", warning=FALSE}
 #store variables
@@ -150,12 +147,48 @@ dependent2 <- fileData[,dep2]
 tot.votes <- fileData[,tot]
 ```
 
-```{r}
-#model_1 <- run_model(independent, dependent1, tot.votes, candidate1, input_slider, racename)
-#model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slider, racename)
-
+```{r echo = F, results = "hide", message = FALSE}
+model_1 <- run_model(independent, dependent1, tot.votes, candidate1, input_slider, racename)
+model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slider, racename)
 ```
 
-# Goodman's Ecological Regression:
+#Candidate 1
 
-# Ecological Inference:
+## Table
+
+First, we compare predictions from three different models for `r params$candidate1` vote share given demographic and total vote data.  
+
+```{r echo = F}
+kable(model_1$ei.table)
+```
+
+## Goodman's Ecological Regression:
+```{r echo = F, warning= FALSE}
+plot(model_1$gr.plot)
+```
+
+## Ecological Inference:
+```{r echo = F}
+plot(model_1$ei.plot)
+```
+
+
+#Candidate 2
+
+## Table
+
+First, we compare predictions from three different models for `r params$candidate2` vote share given demographic and total vote data.  
+
+```{r echo = F}
+kable(model_2$ei.table)
+```
+
+## Goodman's Ecological Regression:
+```{r echo = F, warning= FALSE}
+plot(model_2$gr.plot)
+```
+
+## Ecological Inference:
+```{r echo = F}
+plot(model_2$ei.plot)
+```
