@@ -112,14 +112,6 @@ run_model <- function(independent, dependent, tot.votes, candidate, input_slider
 ```
 
 
-
-```{r, echo = F, results = "hide"}
-#run the models
-model_1 <- run_model(independent, dependent1, tot.votes, candidate1, input_slider, racename)
-model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slider, racename)
-```
-
-
 # Homogeneous Precincts:
 ```{r echo = FALSE}
 library(knitr)
@@ -129,8 +121,38 @@ library(knitr)
   fileData <-read.csv(params$file1$datapath, stringsAsFactors=F)
   kable(fileData, caption = "CSV Data")
 
+  #need to figure out how to remove kable and still print output
 ```
 
+
+```{r, echo = F, results = "hide", warning=FALSE}
+#store variables
+independent <-as.numeric(as.character(params$independent))
+dependent1 <-as.numeric(as.character(params$dependent1))
+tot.votes <-as.numeric(as.character(params$tot.votes))
+dependent2 <-as.numeric(as.character(params$dependent2))
+candidate1 <-as.character(params$candidate1)
+candidate2 <-as.character(params$candidate2)
+racename <-as.character(params$racename)
+input_slider <- as.numeric(as.character(params$input_slider))
+
+#params$independent$pct_asian_vote
+ind <- which(colnames(fileData) == params$independent)
+dep1 <- which(colnames(fileData) == params$dependent1)
+dep2 <- which(colnames(fileData) == params$dependent2)
+tot <- which(colnames(fileData) == params$tot.votes)
+
+independent <- fileData[,ind]
+dependent1 <- fileData[,dep1]
+dependent2 <- fileData[,dep2]
+tot.votes <- fileData[,tot]
+```
+
+```{r}
+#model_1 <- run_model(independent, dependent1, tot.votes, candidate1, input_slider, racename)
+#model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slider, racename)
+
+```
 
 # Goodman's Ecological Regression:
 
