@@ -10,6 +10,11 @@ params:
     candidate1: NA
 ---
 
+# Getting the run_model function
+```{r}
+source("fun.R")
+```
+
 # Homogeneous Precincts:
 ```{r echo = FALSE}
 library(knitr)
