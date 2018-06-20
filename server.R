@@ -277,13 +277,11 @@ shinyServer(function(input, output, session) {
       #copy report to temporary file
       tempReport <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
-      
-      # Set up parameters to pass to Rmd document
-      params <- c(2, 3, 4)
+
       
       # Knit the document, passing in the `params` list
       rmarkdown::render(tempReport, output_file = file,
-                        params = params,
+                        params = list(goodman1 = "west"),
                         envir = new.env(parent = globalenv())
       )
     }
