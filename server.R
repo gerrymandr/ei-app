@@ -186,9 +186,11 @@ shinyServer(function(input, output, session) {
     list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
   }
   
+  ## @knitr model1
   model1 <- eventReactive(input$action, {
     test1 <- test_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
   })    
+
   
   model2 <- eventReactive(input$action, {
     test2 <- test_model(input$independent, input$dependent2, input$tot.votes, input$candidate2)
@@ -197,13 +199,6 @@ shinyServer(function(input, output, session) {
   observeEvent(input$action, {
     output$goodman1 <- renderPlot({
       
-      #withProgress(message='Running EI: Maximizing likelihood...importance sampling.',
-      #             detail= 'This process may take several minutes...', value=4, {
-      #               for(i in 1:10){
-      #                 incProgress(1/10)
-      #                 Sys.sleep(20)
-      #               }
-      #             })
       
       model1()$gr.plot
     })
@@ -258,6 +253,8 @@ shinyServer(function(input, output, session) {
     filedata()
   })
   
+  
+  observeEvent(input$action, {
   output$report <- downloadHandler(
     filename = "report.pdf",
     content = function(file) {
@@ -276,4 +273,5 @@ shinyServer(function(input, output, session) {
       )
     }
   )
+  })
 })

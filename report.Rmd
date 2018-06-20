@@ -1,9 +1,11 @@
 ---
-title: "report"
+title: "Ecological Inference Report"
 output: pdf_document
 ---
 
 # Homogeneous Precincts:
+
+
 
 # Goodman's Ecological Regression:
 
