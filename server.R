@@ -224,12 +224,9 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  observeEvent(input$action, {
-    output$est <- renderTable({
-      
-      model1()$ei.table
-    }, align='c', digits=3)
-  })
+  output$est <- renderTable({
+    req(input$action)
+    model1()$ei.table}, align='c', digits=3)
   
   observeEvent(input$action, {
     output$ei.bounds <- renderPlot({
