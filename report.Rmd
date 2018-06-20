@@ -2,7 +2,6 @@
 title: "Ecological Inference Report"
 output: pdf_document
 params:
-    goodman1: "east"
     file1: "hello"
     independent: NA
     dependent1: NA

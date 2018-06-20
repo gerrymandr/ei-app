@@ -283,8 +283,7 @@ shinyServer(function(input, output, session) {
       
       # Knit the document, passing in the `params` list
       rmarkdown::render(tempReport, output_file = file,
-                        params = list(goodman1 = "west",
-                                      file1 = input$file1,
+                        params = list(file1 = input$file1,
                                       independent = input$independent, 
                                       dependent1 = input$dependent1, 
                                       tot.votes = input$tot.votes, 
