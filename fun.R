@@ -1,12 +1,12 @@
-run_model <- function(independent, dependent, tot.votes, candidate){
+run_model <- function(independent, dependent, tot.votes, candidate, input_slider, racename){
   # Function that generates the table, goodman plot, and EI metric (with confidence plot), given variables
   
-  df <- filedata()[,c(independent, dependent, tot.votes)]
-  names(df) <- c('x', 'y', 'z')
+  df <- as.data.frame(cbind(independent, dependent, tot.votes))
+  colnames(df) <- c('x', 'y', 'z')
   
   # homogeneous precincts
   df <- df[order(df$x),]
-  hp <- round(input$slider/100*dim(df)[1], digits=0)
+  hp <- round(input_slider/100*dim(df)[1], digits=0)
   hp.low <- 1:hp
   hp.high <- (dim(df)[1]-hp):dim(df)[1]
   
@@ -33,12 +33,12 @@ run_model <- function(independent, dependent, tot.votes, candidate){
   ei.out <- ei_est_gen('y', '~ x', 'z',
                        data = df[,c(1:3),], table_names = table.names, sample=1000) # eiCompare
   #ei.out <- ei(y~x, total=input$tot.votes, data=df) # ei
-  edf.t <- data.frame(w=c(paste('All but ', input$racename, ' support', sep=''),
+  edf.t <- data.frame(w=c(paste('All but ', racename, ' support', sep=''),
                           hp.low.mean,
                           ger$coefficients[1],
                           ei.out$ei.white[1]/100,
                           ei.out$ei.white[2]/100),
-                      m=c(paste(input$racename, ' support', sep=''), 
+                      m=c(paste(racename, ' support', sep=''), 
                           hp.high.mean, 
                           ger$coefficients[1]+ger$coefficients[2], 
                           ei.out$ei.minority[1]/100,
@@ -55,10 +55,10 @@ run_model <- function(independent, dependent, tot.votes, candidate){
     geom_point(size=3, aes(colour=as.factor(df$threshold))) +
     geom_point(pch=1, size=3) +
     geom_point(pch=1, size=5, aes(colour=as.factor(df$hp))) +
-    scale_color_manual('Homogeneous precincts', breaks=c(0,1), values=c('Gray', 'Red'), labels=c('No', paste('Most extreme ', input$slider,'%', sep=''))) +
+    scale_color_manual('Homogeneous precincts', breaks=c(0,1), values=c('Gray', 'Red'), labels=c('No', paste('Most extreme ', input_slider,'%', sep=''))) +
     geom_hline(yintercept=0.5, linetype=2, colour='lightgray') +
     theme_bw() + ggtitle("Goodman's Ecological Regression") +
-    xlab(paste('% population ', input$racename, sep='')) + ylab(paste('% vote for ', candidate, sep=''))
+    xlab(paste('% population ', racename, sep='')) + ylab(paste('% vote for ', candidate, sep=''))
   
   # generates ei table
   ei.table <- as.data.frame(t(edf.t))
@@ -83,7 +83,7 @@ run_model <- function(independent, dependent, tot.votes, candidate){
     ylab('') + xlab(paste('Support for candidate ', candidate, sep='')) +
     scale_x_continuous(limits=c(-.25,1.25)) +
     scale_y_continuous(limits=c(0,2), breaks=c(0,0.5,1,1.5,2), labels=c('','','','','')) +
-    scale_color_manual('Race', values=c('gray40', 'midnightblue'), labels=c(paste('All but ', input$racename, sep=''), input$racename)) +
+    scale_color_manual('Race', values=c('gray40', 'midnightblue'), labels=c(paste('All but ', racename, sep=''), racename)) +
     geom_errorbarh(aes(xmin=(ei.est) - 2*(ei.se), xmax=(ei.est) + 2*(ei.se), height=0.3), size=2, alpha=0.7, height=0.3) +
     theme_bw() + ggtitle('Ecological Inference')
   
