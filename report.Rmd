@@ -162,10 +162,15 @@ First, we compare predictions from three different models for `r params$candidat
 kable(model_1$ei.table)
 ```
 
+Next, we plot votes for `r params$candidate1` by the proportion of the population that is `r params$racename` according to Goodman's regression predictions. We use the following equation. 
+
+
 ## Goodman's Ecological Regression:
 ```{r echo = F, warning= FALSE}
 plot(model_1$gr.plot)
 ```
+
+Finally, we calculate ecological inference predictions for`r params$candidate1`'s vote share and plot them with credible intervals. If the intervals overlap, we cannot conclude that there was racially polarized voting for `r params$candidate1`. 
 
 ## Ecological Inference:
 ```{r echo = F}
@@ -183,10 +188,14 @@ First, we compare predictions from three different models for `r params$candidat
 kable(model_2$ei.table)
 ```
 
+Next, we plot votes for `r params$candidate1` by the proportion of the population that is `r params$racename` according to Goodman's regression predictions. We use the following equation. 
+
 ## Goodman's Ecological Regression:
 ```{r echo = F, warning= FALSE}
 plot(model_2$gr.plot)
 ```
+
+Finally, we calculate ecological inference predictions for`r params$candidate2`'s vote share and plot them with credible intervals. If the intervals overlap, we cannot conclude that there was racially polarized voting for `r params$candidate2`. 
 
 ## Ecological Inference:
 ```{r echo = F}
