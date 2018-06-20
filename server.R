@@ -187,7 +187,8 @@ shinyServer(function(input, output, session) {
     list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
   }
   
-
+  # Note: the same output cannot be called wtice in R Shiny, so there are duplicate copies below of
+  # outputs in order to generate tables, plots, and explanations for each candidate tab
   model1 <- eventReactive(input$action, {
     # runs model on candidate 1
     run_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
