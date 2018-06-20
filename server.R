@@ -180,7 +180,7 @@ shinyServer(function(input, output, session) {
       scale_x_continuous(limits=c(-.25,1.25)) +
       scale_y_continuous(limits=c(0,2), breaks=c(0,0.5,1,1.5,2), labels=c('','','','','')) +
       scale_color_manual('Race', values=c('gray40', 'midnightblue'), labels=c(paste('All but ', input$racename, sep=''), input$racename)) +
-      geom_errorbarh(aes(xmin=(ei.est) - 2*(ei.se), xmax=(ei.est) + 2*(ei.se), height=0.1), size=5, alpha=0.7, height=0.1) +
+      geom_errorbarh(aes(xmin=(ei.est) - 2*(ei.se), xmax=(ei.est) + 2*(ei.se), height=0.3), size=2, alpha=0.7, height=0.3) +
       theme_bw() + ggtitle('Ecological Inference')
     
     
