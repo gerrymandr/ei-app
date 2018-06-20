@@ -31,7 +31,7 @@ shinyServer(function(input, output, session) {
     read.csv(inFile$datapath, stringsAsFactors=F)
   })
   
-  output$dependent1 <- renderUI({ #Prompt for candidate 1 data
+  output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)
     df <- filedata()
     if (is.null(df)) return(NULL)
     items=names(df)
@@ -45,7 +45,7 @@ shinyServer(function(input, output, session) {
     textInput('candidate1', 'Name of candidate 1:', '')
   })
   
-  output$dependent2 <- renderUI({ #Prompt for candidate 2 data
+  output$dependent2 <- renderUI({ #Prompt for candidate 2 data (column name)
     df <- filedata()
     if (is.null(df)) return(NULL)
     items=names(df)
@@ -68,14 +68,14 @@ shinyServer(function(input, output, session) {
     selectInput('independent', 'Racial demographic variable:', items, selected='')
   })
   
-  output$raceVar <- renderUI({
+  output$raceVar <- renderUI({ #Prompt for user inputted name of race
     df <- filedata()  
     if (is.null(df)) return(NULL)
     textInput('racename', 'Name of minority race:', '')
   })
   
   
-  output$tot.votes <- renderUI({
+  output$tot.votes <- renderUI({ #Prompt for column to use for total votes
     df <- filedata()
     if(is.null(df)) return(NULL)
     items=names(df)
@@ -93,9 +93,10 @@ shinyServer(function(input, output, session) {
     actionButton('action', ' Run', icon('refresh', lib='glyphicon'))
   })
   
-  ## run models
   
-  test_model <- function(independent, dependent, tot.votes, candidate){
+  run_model <- function(independent, dependent, tot.votes, candidate){
+    # Function that generates the table, goodman plot, and EI metric (with confidence plot), given variables
+    
     df <- filedata()[,c(independent, dependent, tot.votes)]
     names(df) <- c('x', 'y', 'z')
     
@@ -123,7 +124,7 @@ shinyServer(function(input, output, session) {
     # goodman estimates
     ger <- lm(y~x, data=df)
     
-    # ei estimate
+    # ei estimate for table and confidence interval
     table.names <- c('ei.minority', 'ei.white')
     ei.out <- ei_est_gen('y', '~ x', 'z',
                          data = df[,c(1:3),], table_names = table.names, sample=1000) # eiCompare
@@ -140,7 +141,7 @@ shinyServer(function(input, output, session) {
                             ei.out$ei.minority[2]/100))
     row.names(edf.t) <- c(candidate, 'Homogeneous precincts', 'Goodman ER', 'Ecol Inf', 'EI.se')
     
-    # goodman plot
+    # generates goodman plot
     gr.plot <- ggplot(df, aes(x=x,y=y)) + 
       xlab(independent) + ylab(dependent) +
       geom_smooth(method='lm', se=T, colour='black', fullrange=TRUE) +
@@ -155,7 +156,7 @@ shinyServer(function(input, output, session) {
       theme_bw() + ggtitle("Goodman's Ecological Regression") +
       xlab(paste('% population ', input$racename, sep='')) + ylab(paste('% vote for ', candidate, sep=''))
     
-    # ei table
+    # generates ei table
     ei.table <- as.data.frame(t(edf.t))
     for(i in 2:5){
       ei.table[,i] <- as.numeric(as.character(ei.table[,i]))
@@ -167,7 +168,7 @@ shinyServer(function(input, output, session) {
     #df.ei$EI.est.min <- eiread(ei.out, 'betab')
     #df.ei$EI.est.white <- eiread(ei.out, 'betaw')
     
-    # ei dotplot
+    # generates ei dotplot
     
     ei.plot.df <- ei.table[,c(1,4,5)]
     names(ei.plot.df) <- c('race', 'ei.est', 'ei.se')
@@ -186,41 +187,48 @@ shinyServer(function(input, output, session) {
     list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
   }
   
+  "Note: the same output cannot be called twice in R Shiny, so there are duplicate copies below of 
+  all outputs in order to generate tables, plots, and explanations for each candidate tab. "
+  
   model1 <- eventReactive(input$action, {
-    test1 <- test_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
+    # runs model on candidate 1
+    run_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
   })    
   
   model2 <- eventReactive(input$action, {
-    test2 <- test_model(input$independent, input$dependent2, input$tot.votes, input$candidate2)
+    # runs model on candidate 2
+    run_model(input$independent, input$dependent2, input$tot.votes, input$candidate2)
   })     
   
   observeEvent(input$action, {
+    # generates goodman plots for candidates 1 and 2
     output$goodman1 <- renderPlot({
       model1()$gr.plot
     })
-  })
-  
-  observeEvent(input$action, {
     output$goodman2 <- renderPlot({
       model2()$gr.plot
     })
   })
   
   output$est1 <- renderTable({
+    # generates table for candidate 1
     req(input$action)
     model1()$ei.table}, align='c', digits=3)
   
   output$est2 <- renderTable({
+    # generates table for candidate 2
     req(input$action)
     model2()$ei.table}, align='c', digits=3)
   
   observeEvent(input$action, {
+    # generates EI bounds plot for candidate 1
     output$ei.bounds1 <- renderPlot({
       model1()$ei.plot
     }, width=650, height=200)
   })
   
   observeEvent(input$action, {
+    # generates EI bounds plot for candidate 2
     output$ei.bounds2 <- renderPlot({
       model2()$ei.plot
     }, width=650, height=200)

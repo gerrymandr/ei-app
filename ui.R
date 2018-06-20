@@ -83,7 +83,7 @@ dashboardPage(
     column(width=9,
            downloadButton('report', 'Download Report'),
            tabBox(
-             width=NULL, side='right', height='625px',
+             width=NULL, side='right', height=NULL,
              selected='Candidate 1 Figures',
              tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
              tabPanel('Data', tableOutput('ei.compare')),
