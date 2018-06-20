@@ -10,8 +10,9 @@ params:
     candidate1: NA
 ---
 
-# Getting the run_model function
-```{r}
+
+```{r, echo = F}
+#Getting the run_model function
 run_model <- function(independent, dependent, tot.votes, candidate, input_slider, racename){
   # Function that generates the table, goodman plot, and EI metric (with confidence plot), given variables
   
