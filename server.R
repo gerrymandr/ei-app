@@ -36,13 +36,13 @@ shinyServer(function(input, output, session) {
     if (is.null(df)) return(NULL)
     items=names(df)
     names(items)=items
-    selectInput('dependent1','Candidate 1 data:',items, selected='')
+    selectInput('dependent1','Candidate 1 data:',items, selected='pct_for_hardy2')  #CHANGE SELECTED LATER
   })
   
   output$candName1 <- renderUI({ #Prompt for candidate 1 name
     df <- filedata()
     if (is.null(df)) return(NULL)
-    textInput('candidate1', 'Name of candidate 1:', '')
+    textInput('candidate1', 'Name of candidate 1:', value='hardy')  #CHANGE VALUE LATER
   })
   
   output$dependent2 <- renderUI({ #Prompt for candidate 2 data (column name)
@@ -50,13 +50,13 @@ shinyServer(function(input, output, session) {
     if (is.null(df)) return(NULL)
     items=names(df)
     names(items)=items
-    selectInput('dependent2','Candidate 2 data:',items, selected='')
+    selectInput('dependent2','Candidate 2 data:',items, selected='pct_for_kolstad2') #CHANGE SELECTED LATER
   })
   
   output$candName2 <- renderUI({ #Prompt for candidate 2 name
     df <- filedata()
     if (is.null(df)) return(NULL)
-    textInput('candidate2', 'Name of candidate 2:', '')
+    textInput('candidate2', 'Name of candidate 2:', value='kolstad') #CHANGE VALUE LATER
   })
   
   
@@ -65,13 +65,13 @@ shinyServer(function(input, output, session) {
     if (is.null(df)) return(NULL)
     items=names(df)
     names(items)=items
-    selectInput('independent', 'Racial demographic variable:', items, selected='')
+    selectInput('independent', 'Racial demographic variable:', items, selected='pct_asian_vote') #CHANGE SELECTED LATER
   })
   
   output$raceVar <- renderUI({ #Prompt for user inputted name of race
     df <- filedata()  
     if (is.null(df)) return(NULL)
-    textInput('racename', 'Name of minority race:', '')
+    textInput('racename', 'Name of minority race:', value='Asian') #CHANGE VALUE LATER
   })
   
   
@@ -80,7 +80,7 @@ shinyServer(function(input, output, session) {
     if(is.null(df)) return(NULL)
     items=names(df)
     names(items)=items
-    selectInput('tot.votes', 'Total votes cast:',items, selected='')
+    selectInput('tot.votes', 'Total votes cast:',items, selected='total2') #CHANGE SELECTED LATER
   })
   
   output$ui.slider <- renderUI({
