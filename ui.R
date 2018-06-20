@@ -84,12 +84,15 @@ dashboardPage(
            downloadButton('report', 'Download Report'),
            tabBox(
              width=NULL, side='right', height='625px',
-             selected='Figures',
+             selected='Candidate 1 Figures',
              tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
              tabPanel('Data', tableOutput('ei.compare')),
-             tabPanel('Figures', htmlOutput("est_expl"), withSpinner(tableOutput('est')), 
-                      htmlOutput("goodman_expl"), plotOutput('goodman1'), plotOutput('goodman2'),
-                      htmlOutput("bounds_expl"), plotOutput('ei.bounds'))
+             tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')), 
+                      htmlOutput("goodman_expl2"), plotOutput('goodman2'),
+                      htmlOutput("bounds_expl2"), plotOutput('ei.bounds2')),
+             tabPanel('Candidate 1 Figures', htmlOutput("est_expl1"), withSpinner(tableOutput('est1')),
+                      htmlOutput("goodman_expl1"), plotOutput('goodman1'),
+                      htmlOutput("bounds_expl1"), plotOutput('ei.bounds1'))
                 )
           )
       )

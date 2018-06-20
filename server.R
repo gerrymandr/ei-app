@@ -71,7 +71,7 @@ shinyServer(function(input, output, session) {
   output$raceVar <- renderUI({
     df <- filedata()  
     if (is.null(df)) return(NULL)
-    textInput('racename', 'Name of minority race', '')
+    textInput('racename', 'Name of minority race:', '')
   })
   
   
@@ -196,59 +196,61 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$action, {
     output$goodman1 <- renderPlot({
-      
-      #withProgress(message='Running EI: Maximizing likelihood...importance sampling.',
-      #             detail= 'This process may take several minutes...', value=4, {
-      #               for(i in 1:10){
-      #                 incProgress(1/10)
-      #                 Sys.sleep(20)
-      #               }
-      #             })
-      
       model1()$gr.plot
     })
   })
   
   observeEvent(input$action, {
     output$goodman2 <- renderPlot({
-      
-      #withProgress(message='Running EI: Maximizing likelihood...importance sampling.',
-      #             detail= 'This process may take several minutes...', value=4, {
-      #               for(i in 1:10){
-      #                 incProgress(1/10)
-      #                 Sys.sleep(20)
-      #               }
-      #             })
-      
       model2()$gr.plot
     })
   })
   
-  output$est <- renderTable({
+  output$est1 <- renderTable({
     req(input$action)
     model1()$ei.table}, align='c', digits=3)
   
+  output$est2 <- renderTable({
+    req(input$action)
+    model2()$ei.table}, align='c', digits=3)
+  
   observeEvent(input$action, {
-    output$ei.bounds <- renderPlot({
-      
+    output$ei.bounds1 <- renderPlot({
       model1()$ei.plot
-      
+    }, width=650, height=200)
+  })
+  
+  observeEvent(input$action, {
+    output$ei.bounds2 <- renderPlot({
+      model2()$ei.plot
     }, width=650, height=200)
   })
   
   observeEvent(input$action,{
-    output$est_expl <- renderUI({
+    output$est_expl1 <- renderUI({
+      HTML(paste("First, we compare predictions from three different \n models for",input$dependent,
+                 "given demographic and total vote data.", "<br/>","<br/>"))
+    })
+    output$est_expl2 <- renderUI({
       HTML(paste("First, we compare predictions from three different \n models for",input$dependent,
                  "given demographic and total vote data.", "<br/>","<br/>"))
     })
     
     
-    output$goodman_expl <- renderUI({ 
+    output$goodman_expl1 <- renderUI({ 
+      HTML(paste("<br/>","Next, we plot votes for",input$dependent, "against", input$independent,
+                 "according to Goodman's regression predictions","<br/>","<br/>"))
+    })
+    output$goodman_expl2 <- renderUI({ 
       HTML(paste("<br/>","Next, we plot votes for",input$dependent, "against", input$independent,
                  "according to Goodman's regression predictions","<br/>","<br/>"))
     })
     
-    output$bounds_expl <- renderUI({ 
+    output$bounds_expl1 <- renderUI({ 
+      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$independent,
+                 "with credible intervals.","<br/>","<br/>"))
+    })
+    output$bounds_expl2 <- renderUI({ 
       HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$independent,
                  "with credible intervals.","<br/>","<br/>"))
     })
