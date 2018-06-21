@@ -84,7 +84,7 @@ dashboardPage(
            tabBox(
              width=NULL, side='right', height=NULL,
              selected='Candidate 1 Figures',
-             tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
+             #tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
              tabPanel('Data', tableOutput('ei.compare')),
              tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')), 
                       htmlOutput("goodman_expl2"), plotOutput('goodman2'),
