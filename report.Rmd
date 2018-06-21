@@ -152,7 +152,7 @@ model_1 <- run_model(independent, dependent1, tot.votes, candidate1, input_slide
 model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slider, racename)
 ```
 
-#Candidate 1
+# Candidate 1
 
 ## Table
 
@@ -184,7 +184,7 @@ plot(model_1$ei.plot)
 ```
 
 
-#Candidate 2
+# Candidate 2
 
 ## Table
 
