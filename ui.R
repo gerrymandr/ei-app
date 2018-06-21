@@ -1,0 +1,102 @@
+library(shiny)
+library(shinydashboard)
+library(ggplot2)
+library(ei)
+library(eiPack)
+library(eiCompare)
+library(shinycssloaders)
+
+dashboardPage(
+  
+  dashboardHeader(title = "Ecological Inference Analysis",
+                          titleWidth=285
+                  ),
+
+  dashboardSidebar(width=285,
+      fileInput('file1', 'Upload CSV file', accept=c(
+                'text/csv',
+                'text/comma-separated-values,text/plain',
+                '.csv')
+                ),
+                            
+      uiOutput('dependent1'),
+      uiOutput('candName1'),
+        tags$hr(),
+      uiOutput('dependent2'),
+      uiOutput('candName2'),
+        tags$hr(),
+      uiOutput('independent'),
+      uiOutput('raceVar'),
+        tags$hr(),
+      uiOutput('tot.votes'),
+        tags$hr(),
+      uiOutput('ui.slider'),
+        br(),
+      uiOutput('ui.action')
+                  ),
+
+  dashboardBody(
+      
+    fluidRow(column(width=3,
+           
+           box(
+             width=NULL, height=NULL,
+             title = 'Instructions', status='primary', solidHeader=TRUE, 'Use this tool to analyze election results for racially polarized voting.',
+             tags$br(), tags$br(),
+             '1. Upload CSV file containing vote counts and demographic information for your election and region of interest.',
+             tags$br(), tags$br(),
+             '2. Select the relevant columns from your dataset and input category names.',
+             tags$br(), tags$br(),
+             '3. Adjust the slider to select homogeneous precinct threshold.',
+             tags$br(), '(by % of precincts in sample)',
+             tags$br(),tags$br(),
+             '4. Click "Run."',
+             tags$div(tags$ul(tags$li('Note that EI analysis can take several minutes depending on the size of your dataset.'))),
+             #tags$br(),tags$br(),
+             '5. Review figures & tables.'
+           ),
+           
+           box(
+             width=NULL, height=NULL, status='info',
+             #title='Resources', 
+             tags$h6('R pkgs: ', 
+                     a('ei |', href='https://cran.r-project.org/web/packages/ei/index.html'), 
+                     a('eiPack |', href='https://cran.r-project.org/web/packages/eiPack/index.html'), 
+                     a('eiCompare |', href='https://cran.r-project.org/web/packages/eiCompare/index.html'),
+                     a('MCMCpack', href='https://cran.r-project.org/web/packages/MCMCpack/index.html')),
+             #tags$br(),
+             uiOutput('king'),
+             uiOutput('groffman'),
+             uiOutput('blacksher'),
+             tags$h6(a('More...', href='https://scholar.google.com/scholar?q=ecological+inference+voting+rights&btnG=&hl=en&as_sdt=0%2C7'))
+           ),
+           
+           box(icon('globe', lib='glyphicon'), width=NULL, background='black',
+               'MGGG @ Tufts/MIT 2017',
+               br(),
+               #icon('random', lib='glyphicon'),
+               tags$code('GIS-Hackathon 1.0')
+           )  
+    ),
+    
+    column(width=9,
+           downloadButton('report', 'Download Report'),
+           tabBox(
+             width=NULL, side='right', height=NULL,
+             selected='Candidate 1 Figures',
+             #tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
+             tabPanel('Data', tableOutput('ei.compare')),
+             tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')), 
+                      htmlOutput("goodman_expl2"), plotOutput('goodman2'),
+                      htmlOutput("bounds_expl2"), plotOutput('ei.bounds2')),
+             tabPanel('Candidate 1 Figures', htmlOutput("est_expl1"), withSpinner(tableOutput('est1')),
+                      htmlOutput("goodman_expl1"), plotOutput('goodman1'),
+                      htmlOutput("bounds_expl1"), plotOutput('ei.bounds1'))
+                )
+          )
+      )
+   )
+)
+
+
+
