@@ -43,6 +43,8 @@ dashboardPage(
              width=NULL, height=NULL,
              title = 'Instructions', status='primary', solidHeader=TRUE, 'Use this tool to analyze election results for racially polarized voting.',
              tags$br(), tags$br(),
+             actionButton("pdf", 'User Guide', onclick = "window.open('userGuide.pdf')"),
+             tags$br(), tags$br(),
              '1. Upload CSV file containing vote counts and demographic information for your election and region of interest. Other than total number of votes, percent of votes by group should be between 0 and 1.',
              tags$br(), tags$br(),
              '2. Select the relevant columns from your dataset and input category names.',
@@ -83,6 +85,7 @@ dashboardPage(
     
     column(width=9,
            downloadButton('report', 'Download Report'),
+           downloadButton('template', "Expert Witness Report Template"),
            tabBox(
              width=NULL, side='right', height=NULL,
              selected='Candidate 1 Figures',

@@ -272,7 +272,13 @@ shinyServer(function(input, output, session) {
     filedata()
   }, spacing="xs")
   
-  
+  output$template <- downloadHandler(
+    filename = "template.docx",
+    content = function(file) {
+      file.copy("ExpertWitnessTemplate.docx", file)
+    }
+  )
+
   observeEvent(input$action, {
   output$report <- downloadHandler(
     filename = "report.pdf",
