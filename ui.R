@@ -43,7 +43,7 @@ dashboardPage(
              width=NULL, height=NULL,
              title = 'Instructions', status='primary', solidHeader=TRUE, 'Use this tool to analyze election results for racially polarized voting.',
              tags$br(), tags$br(),
-             '1. Upload CSV file containing vote counts and demographic information for your election and region of interest.',
+             '1. Upload CSV file containing vote counts and demographic information for your election and region of interest. Other than total number of votes, percent of votes by group should be between 0 and 1.',
              tags$br(), tags$br(),
              '2. Select the relevant columns from your dataset and input category names.',
              tags$br(), tags$br(),
@@ -73,6 +73,8 @@ dashboardPage(
            
            box(icon('globe', lib='glyphicon'), width=NULL, background='black',
                'MGGG @ Tufts/MIT 2017',
+               br(),
+               'Updated 2018 by VRDI',
                br(),
                #icon('random', lib='glyphicon'),
                tags$code('GIS-Hackathon 1.0')

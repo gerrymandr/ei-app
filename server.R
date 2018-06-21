@@ -247,13 +247,13 @@ shinyServer(function(input, output, session) {
     
     output$goodman_expl1 <- renderUI({ 
       withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate1, "by the proportion of the population that is", 
-                 input$racename, "according to Goodman's regression predictions. We use the following equation: <br/><br/>",
+                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. We use the following equation: <br/><br/>",
                  input$dependent1,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
                  round(model1()$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model1()$ei.table[2,3]-model1()$ei.table[1,3],3), ".<br/><br/>")))
     })
     output$goodman_expl2 <- renderUI({ 
       withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate2, "by the proportion of the population that is", 
-                 input$racename, "according to Goodman's regression predictions. We use the following equation: <br/><br/>", 
+                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. We use the following equation: <br/><br/>", 
                  input$dependent2,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/> Note that \\(\\LARGE\\beta_0 = \\)",
                  round(model2()$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model2()$ei.table[2,3]-model2()$ei.table[1,3],3), ". <br/> <br/>")))
     })
@@ -270,7 +270,7 @@ shinyServer(function(input, output, session) {
   
   output$ei.compare <- renderTable({
     filedata()
-  })
+  }, spacing="xs")
   
   
   observeEvent(input$action, {
