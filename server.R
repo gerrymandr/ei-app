@@ -34,7 +34,7 @@ shinyServer(function(input, output, session) {
   output$source1 <- renderUI({ #Prompt for source of elections data
     df <- filedata()  
     if (is.null(df)) return(NULL)
-    textInput('electionsource', 'Source for elections data:', value='Secretary of State') #CHANGE VALUE LATER
+    textInput('electionsource', 'Source for elections data:', placeholder='For graph citation')
   })
   
   output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)
@@ -42,13 +42,13 @@ shinyServer(function(input, output, session) {
     if (is.null(df)) return(NULL)
     items=names(df)
     names(items)=items
-    selectInput('dependent1','Candidate 1 data:',items, selected='pct_for_hardy2')  #CHANGE SELECTED LATER
+    selectInput('dependent1','Candidate 1 data:',items)
   })
   
   output$candName1 <- renderUI({ #Prompt for candidate 1 name
     df <- filedata()
     if (is.null(df)) return(NULL)
-    textInput('candidate1', 'Name of candidate 1:', value='hardy')  #CHANGE VALUE LATER
+    textInput('candidate1', 'Name of candidate 1:', placeholder='Y-axis label')
   })
   
   output$dependent2 <- renderUI({ #Prompt for candidate 2 data (column name)
@@ -56,19 +56,19 @@ shinyServer(function(input, output, session) {
     if (is.null(df)) return(NULL)
     items=names(df)
     names(items)=items
-    selectInput('dependent2','Candidate 2 data:',items, selected='pct_for_kolstad2') #CHANGE SELECTED LATER
+    selectInput('dependent2','Candidate 2 data:',items)
   })
   
   output$candName2 <- renderUI({ #Prompt for candidate 2 name
     df <- filedata()
     if (is.null(df)) return(NULL)
-    textInput('candidate2', 'Name of candidate 2:', value='kolstad') #CHANGE VALUE LATER
+    textInput('candidate2', 'Name of candidate 2:', placeholder='Y-axis label')
   })
   
   output$source2 <- renderUI({ #Prompt for source of elections data
     df <- filedata()  
     if (is.null(df)) return(NULL)
-    textInput('demsource', 'Source for demographic data:', value='Census') #CHANGE VALUE LATER
+    textInput('demsource', 'Source for demographic data:', placeholder='For citations') 
   })
   
   output$independent <- renderUI({ #Prompt for demographic data
@@ -76,13 +76,13 @@ shinyServer(function(input, output, session) {
     if (is.null(df)) return(NULL)
     items=names(df)
     names(items)=items
-    selectInput('independent', 'Demographic variable:', items, selected='pct_asian_vote') #CHANGE SELECTED LATER
+    selectInput('independent', 'Demographic variable:', items) 
   })
   
   output$raceVar <- renderUI({ #Prompt for user inputted name of race
     df <- filedata()  
     if (is.null(df)) return(NULL)
-    textInput('racename', 'Name of demographic group:', value='Asian') #CHANGE VALUE LATER
+    textInput('racename', 'Name of demographic group:', placeholder='X-axis label') 
   })
   
   
@@ -91,7 +91,7 @@ shinyServer(function(input, output, session) {
     if(is.null(df)) return(NULL)
     items=names(df)
     names(items)=items
-    selectInput('tot.votes', 'Total votes cast:',items, selected='total2') #CHANGE SELECTED LATER
+    selectInput('tot.votes', 'Total votes cast:',items) 
   })
   
   output$ui.slider <- renderUI({
@@ -115,7 +115,7 @@ shinyServer(function(input, output, session) {
     df <- df[order(df$x),]
     hp <- round(input$slider/100*dim(df)[1], digits=0)
     hp.low <- 1:hp
-    hp.high <- (dim(df)[1]-hp+1):dim(df)[1]
+    hp.high <- (dim(df)[1]-hp):dim(df)[1]
     
     df$threshold <- 0
     df$threshold[hp.low] <- 1
@@ -258,30 +258,28 @@ shinyServer(function(input, output, session) {
     
     output$goodman_expl1 <- renderUI({ 
       withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate1, "by the proportion of the population that is", 
-                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The gray band surrounding the line
-                shows us a 95% confidence interval. In other words, we are 95% confident that the true regression line falls within
-                 the shaded region. <br/><br/> The best fit is given by: <br/><br/>",
+                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The best fit is given by: <br/><br/>",
                  input$dependent1,"=\\(\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/>Least squares gives us \\(\\beta_0 = \\)",
                  round(model1()$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(model1()$ei.table[2,3]-model1()$ei.table[1,3],3), ".<br/><br/>")))
     })
     output$goodman_expl2 <- renderUI({ 
       withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate2, "by the proportion of the population that is", 
-                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The gray band surrounding the line
-                shows us a 95% confidence interval. In other words, we are 95% confident that the true regression line falls within
-                 the shaded region. <br/><br/> The best fit is given by: <br/><br/>", 
+                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The best fit is given by: <br/><br/>", 
                  input$dependent2,"=\\(\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/> Least squares gives up \\(\\beta_0 = \\)",
                  round(model2()$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(model2()$ei.table[2,3]-model2()$ei.table[1,3],3), ". <br/> <br/>")))
     })
     
     output$bounds_expl1 <- renderUI({ 
       HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate1, "'s vote share and plot them with credible intervals. These credible intervals
-                 give us ranges of possible vote shares by race. We are 95% confident that the true vote shares for", input$candidate1, " will fall in these two ranges. For example, if we did 100 ecological inference predictions, 95 times out of 100, the vote share would fall in these intervals. <br/> <br/>",
+                 give us ranges of possible vote shares by race. We are 95% confident that the true vote shares for", input$candidate1, " will fall in these two ranges. In other 
+                 words, if we did 100 ecological inference predictions, 95 times out of 100, the vote share would fall in these intervals. <br/> <br/>",
        "If the intervals do not overlap for either candidate (see Candidate 2 tab), we can infer that difference in preference is statistically signficiant and
        this may be evidence to suggest racially polarized voting.", "<br/>","<br/>"))
     })
     output$bounds_expl2 <- renderUI({ 
       HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate2, "'s vote share and plot them with credible intervals. This credible intervals
-                 give us ranges of possible vote shares by race. We are 95% confident that the true vote shares for", input$candidate2, " will fall in these two ranges. For example, if we did 100 ecological inference predictions, 95 times out of 100, the vote share would fall in these intervals. <br/> <br/>",
+                 give us ranges of possible vote shares by race. We are 95% confident that the true vote shares for", input$candidate2, " will fall in these two ranges. In other 
+                 words, if we did 100 ecological inference predictions, 95 times out of 100, the vote share would fall in these intervals. <br/> <br/>",
       "If the intervals do not overlap for either candidate (see Candidate 1 tab), we can infer that difference in preference is statistically signficiant and
        this may be evidence to suggest racially polarized voting.", "<br/>","<br/>"))
     })
