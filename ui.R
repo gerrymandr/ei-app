@@ -18,13 +18,13 @@ dashboardPage(
                 'text/comma-separated-values,text/plain',
                 '.csv')
                 ),
-                            
+      uiOutput('source1'),                   
       uiOutput('dependent1'),
       uiOutput('candName1'),
-        tags$hr(),
       uiOutput('dependent2'),
       uiOutput('candName2'),
         tags$hr(),
+      uiOutput('source2'),
       uiOutput('independent'),
       uiOutput('raceVar'),
         tags$hr(),
