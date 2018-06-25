@@ -115,7 +115,7 @@ shinyServer(function(input, output, session) {
     df <- df[order(df$x),]
     hp <- round(input$slider/100*dim(df)[1], digits=0)
     hp.low <- 1:hp
-    hp.high <- (dim(df)[1]-hp):dim(df)[1]
+    hp.high <- (dim(df)[1]-hp+1):dim(df)[1]
     
     df$threshold <- 0
     df$threshold[hp.low] <- 1
