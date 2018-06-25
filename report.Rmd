@@ -173,7 +173,10 @@ Next, we plot votes for `r params$candidate1` by the proportion of the populatio
 
 ## Goodman's Ecological Regression:
 ```{r echo = F, warning= FALSE}
+# jpeg('goodman1.jpeg') # Attempt to save plot as jpeg
 plot(model_1$gr.plot)
+# dev.off()
+# knitr::include_graphics('./goodman1.jpeg')
 ```
 
 Finally, we calculate ecological inference predictions for`r params$candidate1`'s vote share and plot them with credible intervals. If the intervals overlap, we cannot conclude that there was racially polarized voting for `r params$candidate1`. 

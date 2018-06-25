@@ -34,7 +34,7 @@ shinyServer(function(input, output, session) {
   output$source1 <- renderUI({ #Prompt for source of elections data
     df <- filedata()  
     if (is.null(df)) return(NULL)
-    textInput('electionsource', 'Source for elections data:', value='ACS') #CHANGE VALUE LATER
+    textInput('electionsource', 'Source for elections data:', value='Secretary of State') #CHANGE VALUE LATER
   })
   
   output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)

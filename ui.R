@@ -43,7 +43,7 @@ dashboardPage(
              width=NULL, height=NULL,
              title = 'Instructions', status='primary', solidHeader=TRUE, 'Use this tool to analyze election results for racially polarized voting.',
              tags$br(), tags$br(),
-             actionButton("pdf", 'User Guide', onclick = "window.open('userGuide.pdf')"),
+             actionButton("pdf", 'User Guide & Walkthrough', onclick = "window.open('userGuide.pdf')"),
              tags$br(), tags$br(),
              downloadButton("sample", "Sample CSV"),
              tags$br(), tags$br(),
