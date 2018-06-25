@@ -31,6 +31,12 @@ shinyServer(function(input, output, session) {
     read.csv(inFile$datapath, stringsAsFactors=F)
   })
   
+  output$source1 <- renderUI({ #Prompt for source of elections data
+    df <- filedata()  
+    if (is.null(df)) return(NULL)
+    textInput('electionsource', 'Source for elections data:', value='ACS') #CHANGE VALUE LATER
+  })
+  
   output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)
     df <- filedata()
     if (is.null(df)) return(NULL)
@@ -59,6 +65,11 @@ shinyServer(function(input, output, session) {
     textInput('candidate2', 'Name of candidate 2:', value='kolstad') #CHANGE VALUE LATER
   })
   
+  output$source2 <- renderUI({ #Prompt for source of elections data
+    df <- filedata()  
+    if (is.null(df)) return(NULL)
+    textInput('demsource', 'Source for demographic data:', value='Census') #CHANGE VALUE LATER
+  })
   
   output$independent <- renderUI({ #Prompt for demographic data
     df <- filedata()
@@ -153,8 +164,9 @@ shinyServer(function(input, output, session) {
       geom_point(pch=1, size=5, aes(colour=as.factor(df$hp))) +
       scale_color_manual('Homogeneous precincts', breaks=c(0,1), values=c('Gray', 'Red'), labels=c('No', paste('Most extreme ', input$slider,'%', sep=''))) +
       geom_hline(yintercept=0.5, linetype=2, colour='lightgray') +
-      theme_bw() + ggtitle("Goodman's Ecological Regression") +
-      xlab(paste('% population ', input$racename, sep='')) + ylab(paste('% vote for ', candidate, sep=''))
+      theme_bw() + ggtitle("Goodman's Ecological Regression") + labs(x = paste('% population ', input$racename, sep=''),
+      y= paste('% vote for ', candidate, sep=''), 
+      caption = paste('Election data from', input$electionsource, 'and demographic data from', input$demsource, sep = ' '))
     
     # generates ei table
     ei.table <- as.data.frame(t(edf.t))
@@ -175,9 +187,8 @@ shinyServer(function(input, output, session) {
     
     ei.plot <- ggplot(ei.plot.df, aes(x=ei.est, y=1, col=as.factor(race))) +
       geom_hline(yintercept=1, col='black') +
-      geom_point(size=6, shape=3) +
-      ylab('') + xlab(paste('Support for candidate ', candidate, sep='')) +
-      scale_x_continuous(limits=c(-.25,1.25)) +
+      geom_point(size=6, shape=3) + labs(y=(''), x = paste('Support for candidate ', candidate, sep=''), 
+      caption = paste('Election data from', input$electionsource, 'and demographic data from', input$demsource, sep = ' '))  + scale_x_continuous(limits=c(-.25,1.25)) +
       scale_y_continuous(limits=c(0,2), breaks=c(0,0.5,1,1.5,2), labels=c('','','','','')) +
       scale_color_manual('Race', values=c('gray40', 'midnightblue'), labels=c(paste('All but ', input$racename, sep=''), input$racename)) +
       geom_errorbarh(aes(xmin=(ei.est) - 2*(ei.se), xmax=(ei.est) + 2*(ei.se), height=0.3), size=2, alpha=0.7, height=0.3) +
