@@ -18,13 +18,13 @@ dashboardPage(
                 'text/comma-separated-values,text/plain',
                 '.csv')
                 ),
-                            
+      uiOutput('source1'),                   
       uiOutput('dependent1'),
       uiOutput('candName1'),
-        tags$hr(),
       uiOutput('dependent2'),
       uiOutput('candName2'),
         tags$hr(),
+      uiOutput('source2'),
       uiOutput('independent'),
       uiOutput('raceVar'),
         tags$hr(),
@@ -84,7 +84,7 @@ dashboardPage(
     ),
     
     column(width=9,
-           downloadButton('report', 'Download Report'),
+           downloadButton('report', 'Output PDF'),
            downloadButton('template', "Expert Witness Report Template"),
            tabBox(
              width=NULL, side='right', height=NULL,
@@ -94,7 +94,7 @@ dashboardPage(
              tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')), 
                       htmlOutput("goodman_expl2"), plotOutput('goodman2'),
                       htmlOutput("bounds_expl2"), plotOutput('ei.bounds2')),
-             tabPanel('Candidate 1 Figures', htmlOutput("est_expl1"), withSpinner(tableOutput('est1')),
+             tabPanel('Candidate 1 Figures', htmlOutput("welcome"), withSpinner(tableOutput('est1')),
                       htmlOutput("goodman_expl1"), plotOutput('goodman1'),
                       htmlOutput("bounds_expl1"), plotOutput('ei.bounds1'))
                 )
