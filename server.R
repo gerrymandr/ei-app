@@ -303,10 +303,17 @@ shinyServer(function(input, output, session) {
     }
   )
   
-  output$sample <- downloadHandler(
-    filename = "sample.csv",
+  output$sample1 <- downloadHandler(
+    filename = "SantaClaraSampleData.csv",
     content = function(file) {
-      file.copy("sampleData.csv", file)
+      file.copy("santaClara.csv", file)
+    }
+  )
+  
+  output$sample2 <- downloadHandler(
+    filename = "WaterburySampleData.csv",
+    content = function(file) {
+      file.copy("waterbury.csv", file)
     }
   )
   
