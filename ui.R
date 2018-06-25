@@ -87,7 +87,8 @@ dashboardPage(
     
     column(width=9,
            downloadButton('report', 'Output PDF'),
-           downloadButton('template', "Expert Witness Report Template"),
+           downloadButton('template', "Expert Witness Report Template (.docx)"),
+           downloadButton('templatePages', "Expert Witness Report Template (.pages)"),
            tabBox(
              width=NULL, side='right', height=NULL,
              selected='Candidate 1 Figures',

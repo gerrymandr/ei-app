@@ -296,6 +296,13 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  output$templatePages <- downloadHandler(
+    filename = "template.pages",
+    content = function(file) {
+      file.copy("ExpertWitnessTemplate.pages", file)
+    }
+  )
+  
   output$sample <- downloadHandler(
     filename = "sample.csv",
     content = function(file) {

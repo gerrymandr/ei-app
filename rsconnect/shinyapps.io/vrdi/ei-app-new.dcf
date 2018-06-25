@@ -5,8 +5,8 @@ account: vrdi
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 364646
-bundleId: 1441979
+bundleId: 1447883
 url: https://vrdi.shinyapps.io/ei-app-new/
-when: 1529614053.46103
+when: 1529942848.33598
 asMultiple: FALSE
 asStatic: FALSE
