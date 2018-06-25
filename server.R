@@ -247,24 +247,30 @@ shinyServer(function(input, output, session) {
     
     output$goodman_expl1 <- renderUI({ 
       withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate1, "by the proportion of the population that is", 
-                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. We use the following equation: <br/><br/>",
-                 input$dependent1,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
-                 round(model1()$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model1()$ei.table[2,3]-model1()$ei.table[1,3],3), ".<br/><br/>")))
+                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The best fit is given by: <br/><br/>",
+                 input$dependent1,"=\\(\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/>Least squares gives us \\(\\beta_0 = \\)",
+                 round(model1()$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(model1()$ei.table[2,3]-model1()$ei.table[1,3],3), ".<br/><br/>")))
     })
     output$goodman_expl2 <- renderUI({ 
       withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate2, "by the proportion of the population that is", 
-                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. We use the following equation: <br/><br/>", 
-                 input$dependent2,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/> Note that \\(\\LARGE\\beta_0 = \\)",
-                 round(model2()$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model2()$ei.table[2,3]-model2()$ei.table[1,3],3), ". <br/> <br/>")))
+                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The best fit is given by: <br/><br/>", 
+                 input$dependent2,"=\\(\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/> Least squares gives up \\(\\beta_0 = \\)",
+                 round(model2()$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(model2()$ei.table[2,3]-model2()$ei.table[1,3],3), ". <br/> <br/>")))
     })
     
     output$bounds_expl1 <- renderUI({ 
-      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate1, "'s vote share and plot them with credible intervals.",
-       "If the intervals overlap, we cannot conclude that there was racially polarized voting for", input$candidate2,".","<br/>","<br/>"))
+      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate1, "'s vote share and plot them with credible intervals. These credible intervals
+                 give us ranges of possible vote shares by race. We are 95% confident that the true vote shares for", input$candidate1, " will fall in these two ranges. In other 
+                 words, if we did 100 ecological inference predictions, 95 times out of 100, the vote share would fall in these intervals. <br/> <br/>",
+       "If the intervals do not overlap for either candidate (see Candidate 2 tab), we can infer that difference in preference is statistically signficiant and
+       this may be evidence to suggest racially polarized voting.", "<br/>","<br/>"))
     })
     output$bounds_expl2 <- renderUI({ 
-      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate2,"'s vote share and plot them with credible intervals.",
-        "If the intervals overlap, we cannot conclude that there was racially polarized voting for", input$candidate2,".","<br/>","<br/>"))
+      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate2, "'s vote share and plot them with credible intervals. This credible intervals
+                 give us ranges of possible vote shares by race. We are 95% confident that the true vote shares for", input$candidate2, " will fall in these two ranges. In other 
+                 words, if we did 100 ecological inference predictions, 95 times out of 100, the vote share would fall in these intervals. <br/> <br/>",
+      "If the intervals do not overlap for either candidate (see Candidate 1 tab), we can infer that difference in preference is statistically signficiant and
+       this may be evidence to suggest racially polarized voting.", "<br/>","<br/>"))
     })
   })
   
