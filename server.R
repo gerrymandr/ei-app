@@ -296,6 +296,13 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  output$sample <- downloadHandler(
+    filename = "sample.csv",
+    content = function(file) {
+      file.copy("sampleData.csv", file)
+    }
+  )
+  
   output$welcome <- renderUI({
     req(is.null(input$file1)) # require that the input is null
     HTML(paste("<br/><br/><br/><br/><br/><br/>", tags$h2(tags$b("Welcome"), align="center"),
