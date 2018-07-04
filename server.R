@@ -349,4 +349,19 @@ shinyServer(function(input, output, session) {
     }
   )
   })
+  
+ observeEvent(input$action, {
+   if(input$numCands == 2) {
+    insertTab(inputId = "tabs", 
+              tabPanel('Candidate 1 Figures', htmlOutput("welcome"), withSpinner(tableOutput('est1')),
+                        htmlOutput("goodman_expl1"), plotOutput('goodman1'),
+                        htmlOutput("bounds_expl1"), plotOutput('ei.bounds1')),
+              tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')), 
+                       htmlOutput("goodman_expl2"), plotOutput('goodman2'),
+                       htmlOutput("bounds_expl2"), plotOutput('ei.bounds2')))
+  }    
+  if (input$numCands > 2) {
+   # handle next case here
+  }
+  })
 })

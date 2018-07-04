@@ -93,17 +93,12 @@ dashboardPage(
            downloadButton('report', 'Output PDF'),
            # downloadButton('template', "Expert Witness Report Template (.docx)"),
            # downloadButton('templatePages', "Expert Witness Report Template (.pages)"),
-           tabBox(
+           tabBox(id = "tabs",
              width=NULL, side='right', height=NULL,
-             selected='Candidate 1 Figures',
+             selected='Figures',
              #tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
              tabPanel('Data', div(style = 'overflow-x: scroll', tableOutput('ei.compare'))),
-             tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')), 
-                      htmlOutput("goodman_expl2"), plotOutput('goodman2'),
-                      htmlOutput("bounds_expl2"), plotOutput('ei.bounds2')),
-             tabPanel('Candidate 1 Figures', htmlOutput("welcome"), withSpinner(tableOutput('est1')),
-                      htmlOutput("goodman_expl1"), plotOutput('goodman1'),
-                      htmlOutput("bounds_expl1"), plotOutput('ei.bounds1'))
+             tabPanel('Figures', htmlOutput("welcome"))
                 )
           )
       )
