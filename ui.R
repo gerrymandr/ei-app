@@ -18,20 +18,24 @@ dashboardPage(
                 'text/comma-separated-values,text/plain',
                 '.csv')
                 ),
-      uiOutput('source1'),                   
-      uiOutput('dependent1'),
-      uiOutput('candName1'),
-      uiOutput('dependent2'),
-      uiOutput('candName2'),
-        tags$hr(),
-      uiOutput('source2'),
+       
+      uiOutput('numCandidates'),
+      uiOutput('candDataPrompts'),
+      uiOutput('candNamePrompts'),
+     
       uiOutput('independent'),
       uiOutput('raceVar'),
         tags$hr(),
+      
       uiOutput('tot.votes'),
         tags$hr(),
+      
+      uiOutput('source1'),
+      uiOutput('source2'),
+      
       uiOutput('ui.slider'),
         br(),
+      
       uiOutput('ui.action')
                   ),
 
@@ -98,7 +102,13 @@ dashboardPage(
              selected='Figures',
              #tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
              tabPanel('Data', div(style = 'overflow-x: scroll', tableOutput('ei.compare'))),
-             tabPanel('Figures', htmlOutput("welcome"))
+             # tabPanel('Figures', htmlOutput("welcome")),
+             tabPanel('Candidate 1 Figures', htmlOutput("welcome"), withSpinner(tableOutput('est1')),
+                      htmlOutput("goodman_expl1"), plotOutput('goodman1'),
+                      htmlOutput("bounds_expl1"), plotOutput('ei.bounds1')),
+             tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')),
+                      htmlOutput("goodman_expl2"), plotOutput('goodman2'),
+                      htmlOutput("bounds_expl2"), plotOutput('ei.bounds2'))
                 )
           )
       )

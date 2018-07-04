@@ -31,45 +31,55 @@ shinyServer(function(input, output, session) {
     read.csv(inFile$datapath, stringsAsFactors=F)
   })
   
+  output$numCandidates <- renderUI({ #Prompt for number of candidates
+    df <- filedata()
+    if (is.null(df)) return(NULL)
+    numericInput("numCandidates", label = "Number of candidates:", value = 1, min = 1, max = 20, step=1)
+  })
+  
   output$source1 <- renderUI({ #Prompt for source of elections data
     df <- filedata()  
     if (is.null(df)) return(NULL)
     textInput('electionsource', 'Source for elections data:', placeholder='For graph citation')
   })
   
-  output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)
+  # output$source2 <- renderUI({ #Prompt for source of elections data
+  #   df <- filedata()  
+  #   if (is.null(df)) return(NULL)
+  #   textInput('electionsource', 'Source for elections data:', placeholder='For graph citation')
+  # })
+  
+  output$candDataPrompts <- renderUI({
     df <- filedata()
     if (is.null(df)) return(NULL)
+    if (is.null(input$numCandidates)) return(NULL)
+    numCandidates <- as.integer(input$numCandidates)
     items=names(df)
     names(items)=items
-    selectInput('dependent1','Candidate 1 data:',items)
+    
+    lapply(1:numCandidates, function(i) {
+      varName1 <- paste("dependent",i, sep = "")
+      text1 <- paste("Candidate ", i, " data: ", sep= "")
+      selectInput(varName1,text1,items)
+    })
+    
   })
   
-  output$candName1 <- renderUI({ #Prompt for candidate 1 name
+  output$candNamePrompts <- renderUI({
     df <- filedata()
     if (is.null(df)) return(NULL)
-    textInput('candidate1', 'Name of candidate 1:', placeholder='Y-axis label')
-  })
-  
-  output$dependent2 <- renderUI({ #Prompt for candidate 2 data (column name)
-    df <- filedata()
-    if (is.null(df)) return(NULL)
+    if (is.null(input$numCandidates)) return(NULL)
+    numCandidates <- as.integer(input$numCandidates)
     items=names(df)
     names(items)=items
-    selectInput('dependent2','Candidate 2 data:',items)
+    
+    lapply(1:numCandidates, function(i) {
+      varName2 <- paste("candidate",i, sep = "")
+      text2 <- paste("Name of candidate ", i, ": ", sep= "")
+      textInput(varName2, text2)
+    })
   })
   
-  output$candName2 <- renderUI({ #Prompt for candidate 2 name
-    df <- filedata()
-    if (is.null(df)) return(NULL)
-    textInput('candidate2', 'Name of candidate 2:', placeholder='Y-axis label')
-  })
-  
-  output$source2 <- renderUI({ #Prompt for source of elections data
-    df <- filedata()  
-    if (is.null(df)) return(NULL)
-    textInput('demsource', 'Source for demographic data:', placeholder='For citations') 
-  })
   
   output$independent <- renderUI({ #Prompt for demographic data
     df <- filedata()
@@ -198,50 +208,73 @@ shinyServer(function(input, output, session) {
     list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
   }
   
+  dependents <- eventReactive(input$action, {
+    numCandidates <- input$numCandidates
+    cands <- c()
+    candNames <- c()
+    for(i in 1:numCandidates){
+      cands <- c(cands, input[[paste("dependent",i,sep="")]])
+      candNames <- c(candNames, input[[paste("candidate",i,sep="")]])
+    }
+    list(cands = cands, candNames = candNames, numCandidates = numCandidates)
+    
+  })
+  
+  models <- eventReactive(input$action, {
+    models <- list()
+    for(i in 1:dependents()$numCandidates){
+      #name = paste("model",i, sep = "")
+      new <- run_model(input$independent, dependents()$cands[i],
+                                   input$tot.votes, dependents()$candNames[i])
+      models[[i]] <- new
+    }
+    models
+  })
+  
   # Note: the same output cannot be called wtice in R Shiny, so there are duplicate copies below of
   # outputs in order to generate tables, plots, and explanations for each candidate tab
-  model1 <- eventReactive(input$action, {
-    # runs model on candidate 1
-    run_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
-  })    
-
-  
-  model2 <- eventReactive(input$action, {
-    # runs model on candidate 2
-    run_model(input$independent, input$dependent2, input$tot.votes, input$candidate2)
-  })     
+  # model1 <- eventReactive(input$action, {
+  #   # runs model on candidate 1
+  #   run_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
+  # })
+  # 
+  # 
+  # model2 <- eventReactive(input$action, {
+  #   # runs model on candidate 2
+  #   run_model(input$independent, input$dependent2, input$tot.votes, input$candidate2)
+  # })
   
   observeEvent(input$action, {
     # generates goodman plots for candidates 1 and 2
     output$goodman1 <- renderPlot({
-      model1()$gr.plot
+      models()[[1]]$gr.plot
     })
     output$goodman2 <- renderPlot({
-      model2()$gr.plot
+      models()[[2]]$gr.plot
     })
   })
   
   output$est1 <- renderTable({
     # generates table for candidate 1
     req(input$action)
-    model1()$ei.table}, align='c', digits=3)
+    models()[[1]]$ei.table}, align='c', digits=3)
   
   output$est2 <- renderTable({
     # generates table for candidate 2
     req(input$action)
-    model2()$ei.table}, align='c', digits=3)
+    models()[[2]]$ei.table}, align='c', digits=3)
   
   observeEvent(input$action, {
     # generates EI bounds plot for candidate 1
     output$ei.bounds1 <- renderPlot({
-      model1()$ei.plot
+      models()[[1]]()$ei.plot
     }, width=650, height=200)
   })
   
   observeEvent(input$action, {
     # generates EI bounds plot for candidate 2
     output$ei.bounds2 <- renderPlot({
-      model2()$ei.plot
+      models()[[2]]()$ei.plot
     }, width=650, height=200)
   })
   
@@ -260,13 +293,13 @@ shinyServer(function(input, output, session) {
       withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate1, "by the proportion of the population that is", 
                  input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The best fit is given by: <br/><br/>",
                  input$dependent1,"=\\(\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/>Least squares gives us \\(\\beta_0 = \\)",
-                 round(model1()$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(model1()$ei.table[2,3]-model1()$ei.table[1,3],3), ".<br/><br/>")))
+                 round(models()[[1]]$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(models()[[1]]$ei.table[2,3]-models()[[1]]$ei.table[1,3],3), ".<br/><br/>")))
     })
     output$goodman_expl2 <- renderUI({ 
       withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate2, "by the proportion of the population that is", 
                  input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The best fit is given by: <br/><br/>", 
                  input$dependent2,"=\\(\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/> Least squares gives up \\(\\beta_0 = \\)",
-                 round(model2()$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(model2()$ei.table[2,3]-model2()$ei.table[1,3],3), ". <br/> <br/>")))
+                 round(models()[[1]]$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(models()[[1]]$ei.table[2,3]-models()[[1]]$ei.table[1,3],3), ". <br/> <br/>")))
     })
     
     output$bounds_expl1 <- renderUI({ 
@@ -350,18 +383,22 @@ shinyServer(function(input, output, session) {
   )
   })
   
- observeEvent(input$action, {
-   if(input$numCands == 2) {
-    insertTab(inputId = "tabs", 
-              tabPanel('Candidate 1 Figures', htmlOutput("welcome"), withSpinner(tableOutput('est1')),
-                        htmlOutput("goodman_expl1"), plotOutput('goodman1'),
-                        htmlOutput("bounds_expl1"), plotOutput('ei.bounds1')),
-              tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')), 
-                       htmlOutput("goodman_expl2"), plotOutput('goodman2'),
-                       htmlOutput("bounds_expl2"), plotOutput('ei.bounds2')))
-  }    
-  if (input$numCands > 2) {
-   # handle next case here
-  }
+  
+  
+ # observeEvent(input$action, {
+ #   if(input$numCandidates == 2) {
+ #    insertTab(inputId = "tabs",
+ #              tabPanel('Candidate 1 Figures', htmlOutput("welcome"), withSpinner(tableOutput('est1')),
+ #                        htmlOutput("goodman_expl1"), plotOutput('goodman1'),
+ #                        htmlOutput("bounds_expl1"), plotOutput('ei.bounds1')),
+ #              tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')),
+ #                       htmlOutput("goodman_expl2"), plotOutput('goodman2'),
+ #                       htmlOutput("bounds_expl2"), plotOutput('ei.bounds2')))
+ #  }
+ #  if (input$numCandidates > 2) {
+ #   return(NULL)
+ #  }
+ #  })
+  
   })
-})
+
