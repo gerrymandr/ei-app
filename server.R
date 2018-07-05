@@ -384,9 +384,16 @@ shinyServer(function(input, output, session) {
     }
     req(input$numCandidates>0)
     nTabs = input$numCandidates
-    myTabs = lapply(paste('Tab', 1: nTabs), function(i) {
-      tabPanel(paste0("Candidate",i),htmlOutput(paste0("goodman_expl1",i)))
+    myTabs = lapply(1: nTabs, function(i) {
+      tabPanel(paste0("Candidate",i), 
+               htmlOutput(paste0("est_expl",i)),
+               withSpinner(tableOutput(paste0("est",i))),
+               htmlOutput(paste0("goodman_expl", i)),
+               plotOutput(paste0("goodman",i)),
+               htmlOutput(paste0("bounds_expl",i)),
+               plotOutput(paste0("ei.bounds", i)))
     })
+
     do.call(tabsetPanel, myTabs)
   })
 
