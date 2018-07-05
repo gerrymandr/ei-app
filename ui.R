@@ -102,7 +102,7 @@ dashboardPage(
            )  
     ),
     
-    column(width=9,
+    column(width=9,style = "background-color:white;",
            downloadButton('report', 'Output PDF'),
            # downloadButton('template', "Expert Witness Report Template (.docx)"),
            # downloadButton('templatePages', "Expert Witness Report Template (.pages)"),
