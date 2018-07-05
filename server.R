@@ -397,6 +397,22 @@ shinyServer(function(input, output, session) {
     HTML(paste("<br/><br/><br/><br/><br/><br/>", tags$h2(tags$b("Welcome"), align="center"),
                tags$h5(tags$i("No data is currently loaded."), align="center") ))
   })
+  
+  output$mytabs = renderUI({
+    if (is.null(input$file1)){
+      output$welcome <- renderUI({
+        req(is.null(input$file1)) # require that the input is null
+        HTML(paste("<br/><br/><br/><br/><br/><br/>", tags$h2(tags$b("Welcome"), align="center"),
+                   tags$h5(tags$i("No data is currently loaded."), align="center") ))
+      })
+    }
+    req(input$numCandidates>0)
+    nTabs = input$numCandidates
+    myTabs = lapply(paste('Tab', 1: nTabs), function(i) {
+      tabPanel(paste0("Candidate",i),htmlOutput(paste0("goodman_expl1",i)))
+    })
+    do.call(tabsetPanel, myTabs)
+  })
 
   observeEvent(input$action, {
   output$report <- downloadHandler(

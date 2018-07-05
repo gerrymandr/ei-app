@@ -20,10 +20,13 @@ dashboardPage(
                 ),
        
       uiOutput('numCandidates'),
+        tags$hr(),
       uiOutput('dependent1'),
       uiOutput('candName1'),
+        tags$hr(),
       uiOutput('dependent2'),
       uiOutput('candName2'),
+        tags$hr(),
       uiOutput('dependent3'),
       uiOutput('candName3'),
       # uiOutput('candDataPrompts'),
@@ -103,19 +106,21 @@ dashboardPage(
            downloadButton('report', 'Output PDF'),
            # downloadButton('template', "Expert Witness Report Template (.docx)"),
            # downloadButton('templatePages', "Expert Witness Report Template (.pages)"),
-           tabBox(id = "tabs",
-             width=NULL, side='right', height=NULL,
-             selected='Figures',
-             #tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
-             tabPanel('Data', div(style = 'overflow-x: scroll', tableOutput('ei.compare'))),
-             # tabPanel('Figures', htmlOutput("welcome")),
-             tabPanel('Candidate 1 Figures', htmlOutput("welcome"), withSpinner(tableOutput('est1')),
-                      htmlOutput("goodman_expl1"), plotOutput('goodman1'),
-                      htmlOutput("bounds_expl1"), plotOutput('ei.bounds1')),
-             tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')),
-                      htmlOutput("goodman_expl2"), plotOutput('goodman2'),
-                      htmlOutput("bounds_expl2"), plotOutput('ei.bounds2'))
-                )
+           htmlOutput("welcome"),
+           uiOutput('mytabs')
+           # tabBox(id = "tabs",
+           #   width=NULL, side='right', height=NULL,
+           #   selected='Candidate 1 Figures',
+           #   #tabPanel('Map', 'Coming soon!', br(), tags$div(tags$ul(tags$li('User uploads shapeFiles and EI analysis is paired with choropleth of precincts by EI estimates.')))),
+           #   tabPanel('Data', div(style = 'overflow-x: scroll', tableOutput('ei.compare'))),
+           #   # tabPanel('Figures', htmlOutput("welcome")),
+           #   tabPanel('Candidate 1 Figures', htmlOutput("welcome"), withSpinner(tableOutput('est1')),
+           #            htmlOutput("goodman_expl1"), plotOutput('goodman1'),
+           #            htmlOutput("bounds_expl1"), plotOutput('ei.bounds1')),
+           #   tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')),
+           #            htmlOutput("goodman_expl2"), plotOutput('goodman2'),
+           #            htmlOutput("bounds_expl2"), plotOutput('ei.bounds2'))
+           #      )
           )
       )
    )
