@@ -20,8 +20,14 @@ dashboardPage(
                 ),
        
       uiOutput('numCandidates'),
-      uiOutput('candDataPrompts'),
-      uiOutput('candNamePrompts'),
+      uiOutput('dependent1'),
+      uiOutput('candName1'),
+      uiOutput('dependent2'),
+      uiOutput('candName2'),
+      uiOutput('dependent3'),
+      uiOutput('candName3'),
+      # uiOutput('candDataPrompts'),
+      # uiOutput('candNamePrompts'),
      
       uiOutput('independent'),
       uiOutput('raceVar'),
