@@ -267,19 +267,20 @@ shinyServer(function(input, output, session) {
   observeEvent(input$action, {
     # generates EI bounds plot for candidate 1
     output$ei.bounds1 <- renderPlot({
-      models()[[1]]()$ei.plot
+      models()[[1]]$ei.plot
     }, width=650, height=200)
   })
   
   observeEvent(input$action, {
     # generates EI bounds plot for candidate 2
     output$ei.bounds2 <- renderPlot({
-      models()[[2]]()$ei.plot
+      models()[[2]]$ei.plot
     }, width=650, height=200)
   })
   
   observeEvent(input$action,{
-    output$est_expl1 <- renderUI({
+    test <- paste("est_","expl1", sep = "")
+    output$as.name(test) <- renderUI({
       HTML(paste("First, we compare predictions from three different models for",input$candidate1,
                  "'s vote share given demographic and total vote data.", "<br/>","<br/>"))
     })
