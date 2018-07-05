@@ -272,93 +272,69 @@ shinyServer(function(input, output, session) {
     models
   })
   
-  # Note: the same output cannot be called wtice in R Shiny, so there are duplicate copies below of
-  # outputs in order to generate tables, plots, and explanations for each candidate tab
-  # model1 <- eventReactive(input$action, {
-  #   # runs model on candidate 1
-  #   run_model(input$independent, input$dependent1, input$tot.votes, input$candidate1)
-  # })
-  # 
-  # 
-  # model2 <- eventReactive(input$action, {
-  #   # runs model on candidate 2
-  #   run_model(input$independent, input$dependent2, input$tot.votes, input$candidate2)
-  # })
+  
+  # output$est1 <- renderTable({
+  #   # generates table for candidate 1
+  #   req(input$action)
+  #   models()[[1]]$ei.table}, align='c', digits=3)
+  
+  
+  ##Generate tables for candidates
   
   observeEvent(input$action, {
-    # generates goodman plots for candidates 1 and 2
-    output$goodman1 <- renderPlot({
-      models()[[1]]$gr.plot
-    })
-    output$goodman2 <- renderPlot({
-      models()[[2]]$gr.plot
+    
+    lapply(1:input$numCandidates, function(i) {
+      output[[paste0('est', i)]] <- renderTable({
+        models()[[i]]$ei.table}, align='c', digits=3)
     })
   })
   
-  output$est1 <- renderTable({
-    # generates table for candidate 1
-    req(input$action)
-    models()[[1]]$ei.table}, align='c', digits=3)
-  
-  output$est2 <- renderTable({
-    # generates table for candidate 2
-    req(input$action)
-    models()[[2]]$ei.table}, align='c', digits=3)
-  
+  ##Generates plots for candidates
   observeEvent(input$action, {
-    # generates EI bounds plot for candidate 1
-    output$ei.bounds1 <- renderPlot({
-      models()[[1]]$ei.plot
-    }, width=650, height=200)
-  })
+    lapply(1:input$numCandidates, function(i) {
+      output[[paste0('goodman', i)]] <- renderPlot({
+        models()[[2]]$gr.plot
+      })
+    })
+    
+    lapply(1:input$numCandidates, function(i) {
+      output[[paste0('ei.bounds', i)]] <- renderPlot({
+        models()[[i]]$ei.plot
+      }, width=650, height=200)
+      })
+    })
+    
   
-  observeEvent(input$action, {
-    # generates EI bounds plot for candidate 2
-    output$ei.bounds2 <- renderPlot({
-      models()[[2]]$ei.plot
-    }, width=650, height=200)
-  })
-  
+  ##Explanation of table
   observeEvent(input$action,{
-    test <- paste("est_","expl1", sep = "")
-    output$est_expl1 <- renderUI({
-      HTML(paste("First, we compare predictions from three different models for",input$candidate1,
-                 "'s vote share given demographic and total vote data.", "<br/>","<br/>"))
+    lapply(1:input$numCandidates, function(i) {
+      output[[paste0('est_expl', i)]] <- renderUI({
+        HTML(paste0("First, we compare predictions from three different models for ",input[[paste0('candidate',i)]],
+                   "'s vote share given demographic and total vote data.", "<br/>","<br/>"))
+      })
     })
-    output$est_expl2 <- renderUI({
-      HTML(paste("First, we compare predictions from three different models for",input$candidate2,
-                 "'s vote share given demographic and total vote data.", "<br/>","<br/>"))
-    })
-    
-    
-    output$goodman_expl1 <- renderUI({ 
-      withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate1, "by the proportion of the population that is", 
-                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The best fit is given by: <br/><br/>",
-                 input$dependent1,"=\\(\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/>Least squares gives us \\(\\beta_0 = \\)",
-                 round(models()[[1]]$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(models()[[1]]$ei.table[2,3]-models()[[1]]$ei.table[1,3],3), ".<br/><br/>")))
-    })
-    output$goodman_expl2 <- renderUI({ 
-      withMathJax(HTML(paste("<br/>","Next, we plot votes for", input$candidate2, "by the proportion of the population that is", 
-                 input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The best fit is given by: <br/><br/>", 
-                 input$dependent2,"=\\(\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/> Least squares gives up \\(\\beta_0 = \\)",
-                 round(models()[[1]]$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(models()[[1]]$ei.table[2,3]-models()[[1]]$ei.table[1,3],3), ". <br/> <br/>")))
+  
+  ##Explanations of Goodman plots
+    lapply(1:input$numCandidates, function(i) {
+      output[[paste0('goodman_expl', i)]] <- renderUI({
+        withMathJax(HTML(paste("<br/>","Next, we plot votes for", input[[paste0('candidate',i)]], "by the proportion of the population that is", 
+                               input$racename, "according to Goodman's regression predictions. Every point represents a precinct. The best fit is given by: <br/><br/>",
+                               input[[paste0('dependent',i)]],"=\\(\\beta_0 + \\beta_1\\)",input$independent, "<br/><br/>Least squares gives us \\(\\beta_0 = \\)",
+                               round(models()[[i]]$ei.table[1,3],3), "and \\(\\beta_1 =\\)", round(models()[[i]]$ei.table[2,3]-models()[[i]]$ei.table[1,3],3), ".<br/><br/>")))
+      })
     })
     
-    output$bounds_expl1 <- renderUI({ 
-      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate1, "'s vote share and plot them with credible intervals. These credible intervals
+  ##Explanations of EI bounds plots
+    lapply(1:input$numCandidates, function(i) {
+      output[[paste0('bounds_expl', i)]] <- renderUI({
+        HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input[[paste0('candidate',i)]], "'s vote share and plot them with credible intervals. These credible intervals
                  give us ranges of possible vote shares by race. We are 95% confident that the true vote shares for", input$candidate1, " will fall in these two ranges. In other 
-                 words, if we did 100 ecological inference predictions, 95 times out of 100, the vote share would fall in these intervals. <br/> <br/>",
-       "If the intervals do not overlap for either candidate (see Candidate 2 tab), we can infer that difference in preference is statistically signficiant and
-       this may be evidence to suggest racially polarized voting.", "<br/>","<br/>"))
-    })
-    output$bounds_expl2 <- renderUI({ 
-      HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input$candidate2, "'s vote share and plot them with credible intervals. This credible intervals
-                 give us ranges of possible vote shares by race. We are 95% confident that the true vote shares for", input$candidate2, " will fall in these two ranges. In other 
-                 words, if we did 100 ecological inference predictions, 95 times out of 100, the vote share would fall in these intervals. <br/> <br/>",
-      "If the intervals do not overlap for either candidate (see Candidate 1 tab), we can infer that difference in preference is statistically signficiant and
-       this may be evidence to suggest racially polarized voting.", "<br/>","<br/>"))
+                   words, if we did 100 ecological inference predictions, 95 times out of 100, the vote share would fall in these intervals. <br/> <br/>",
+                   "If the intervals do not overlap for each candidate, we can infer that difference in preference is statistically signficiant and
+                   this may be evidence to suggest racially polarized voting.", "<br/>","<br/>"))      })
     })
   })
+
   
   output$ei.compare <- renderTable({
     filedata()
