@@ -107,6 +107,23 @@ dashboardPage(
            # downloadButton('template', "Expert Witness Report Template (.docx)"),
            # downloadButton('templatePages', "Expert Witness Report Template (.pages)"),
            htmlOutput("welcome"),
+          tags$head(tags$style(type="text/css", "
+                                  #loadmessage {
+                                  position: fixed;
+                                  top: 0px;
+                                  left: 0px;
+                                  width: 100%;
+                                  padding: 5px 0px 5px 0px;
+                                  text-align: center;
+                                  font-weight: bold;
+                                  font-size: 100%;
+                                  color: #000000;
+                                  background-color: #CCFF66;
+                                  z-index: 105;
+                                  }
+                                  ")),
+             conditionalPanel(condition="$('html').hasClass('shiny-busy')",
+                              tags$div("Calculating...",id="loadmessage")),
            uiOutput('mytabs')
            # tabBox(id = "tabs",
            #   width=NULL, side='right', height=NULL,

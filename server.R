@@ -387,7 +387,7 @@ shinyServer(function(input, output, session) {
     myTabs = lapply(1: nTabs, function(i) {
       tabPanel(paste0("Candidate",i), 
                htmlOutput(paste0("est_expl",i)),
-               withSpinner(tableOutput(paste0("est",i))),
+               tableOutput(paste0("est",i)),
                htmlOutput(paste0("goodman_expl", i)),
                plotOutput(paste0("goodman",i)),
                htmlOutput(paste0("bounds_expl",i)),
