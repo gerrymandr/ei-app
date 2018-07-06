@@ -394,6 +394,7 @@ shinyServer(function(input, output, session) {
                htmlOutput(paste0("bounds_expl",i)),
                plotOutput(paste0("ei.bounds", i)))
     })
+    myTabs[[nTabs + 1]] <- tabPanel('Data', div(style = 'overflow-x: scroll', tableOutput('ei.compare')))
     do.call(tabsetPanel, myTabs)
   })
 
