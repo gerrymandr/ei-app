@@ -67,7 +67,7 @@ dashboardPage(
              tags$br(), tags$br(),
              '1. Upload CSV file containing vote counts and demographic information for your election and region of interest. Other than total number of votes, percent of votes by group should be between 0 and 1.',
              tags$br(), tags$br(),
-             '2. Select the relevant columns from your dataset and input category names.',
+             '2. Select the relevant columns from your dataset and input category names. EI will be performed on the number of candidates selected, which does not have to be all candidates in the race.',
              tags$br(), tags$br(),
              '3. Adjust the slider to select homogeneous precinct threshold.',
              tags$br(), '(by % of precincts in sample)',
