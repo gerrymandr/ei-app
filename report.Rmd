@@ -177,12 +177,12 @@ if (i == 2) {cat('First, we compare predictions from three different models for'
 if (i == 3) {cat('First, we compare predictions from three different models for', params$candidate3, '\n')}
 if (i == 4) {cat('First, we compare predictions from three different models for', params$candidate4, '\n')}
 cat('vote share given demographic and total vote data' , '\n')  
-kable(model_1$ei.table)
-}
-```
+if (i == 1) { print(kable(model_1$ei.table)) }
+if (i == 2) { print(kable(model_2$ei.table)) }
+if (i == 3) { print(kable(model_3$ei.table)) }
+if (i == 4) { print(kable(model_4$ei.table)) }
+cat('\n')
 
-``` {r echo = F, results='asis', warning = FALSE}
-for (i in 1: params$numCands) {
 cat('\\subsection{$Goodmans Ecological Regression$}')
 if (i ==  1) {cat('Next, we plot votes for', params$candidate1, 'by the proportion of the population', '\n')}
 if (i ==  2) {cat('Next, we plot votes for', params$candidate2, 'by the proportion of the population', '\n')}
@@ -190,15 +190,32 @@ if (i ==  3) {cat('Next, we plot votes for', params$candidate3, 'by the proporti
 if (i ==  4) {cat('Next, we plot votes for', params$candidate4, 'by the proportion of the population', '\n')}
 cat(params$racename, "according to Goodman's regression predictions", '\n')
 cat("We use the following equation: ", '\n')
-if (i == 1) {plot(model_1)$gr.plot}
-if (i == 2) {plot(model_2)$gr.plot}
-if (i == 3) {plot(model_3)$gr.plot}
-if (i == 4) {plot(model_4)$gr.plot}
+if (i == 1) {
+  print(withMathJax(HTML(paste(
+        params$dependent1,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
+        round(model_1$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model_1$ei.table[2,3]-model_1$ei.table[1,3],3),".", "<br/><br/>"))))
 }
-```
+if (i == 2) {
+  print(withMathJax(HTML(paste(
+        params$dependent2,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
+        round(model_2$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model_2$ei.table[2,3]-model_2$ei.table[1,3],3),".", "<br/><br/>"))))
+}
+if (i == 3) {
+  print(withMathJax(HTML(paste(
+        params$dependent3,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
+        round(model_3$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model_3$ei.table[2,3]-model_3$ei.table[1,3],3),".", "<br/><br/>"))))
+}
+if (i == 4) {
+  print(withMathJax(HTML(paste(
+        params$dependent4,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
+        round(model_4$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model_4$ei.table[2,3]-model_4$ei.table[1,3],3),".", "<br/><br/>"))))
+}
 
-``` {r echo = F, results='asis', warning = FALSE}
-for (i in 1: params$numCands) {
+if (i == 1) {plot(model_1$gr.plot)}
+if (i == 2) {plot(model_2$gr.plot)}
+if (i == 3) {plot(model_3$gr.plot)}
+if (i == 4) {plot(model_4$gr.plot)}
+
 cat('\\subsection{$Ecological Inference$}')
 if (i == 1) {cat("Finally, we calculate ecological inference predictions for", params$candidate1, "\n")}
 if (i == 2) {cat("Finally, we calculate ecological inference predictions for", params$candidate2, "\n")}
@@ -209,30 +226,14 @@ if (i == 1) {cat("we cannot conclude that there was racially polarized voting fo
 if (i == 2) {cat("we cannot conclude that there was racially polarized voting for", params$candidate2, ". \n")}
 if (i == 3) {cat("we cannot conclude that there was racially polarized voting for", params$candidate3, ". \n")}
 if (i == 4) {cat("we cannot conclude that there was racially polarized voting for", params$candidate4, ". \n")}
-plot(model_1$ei.plot)
+if (i == 1) {plot(model_1$ei.plot)}
+if (i == 2) {plot(model_2$ei.plot)}
+if (i == 3) {plot(model_3$ei.plot)}
+if (i == 4) {plot(model_4$ei.plot)}
 cat("\n")
 }
 ```
 
 
-
-```{r echo = F}
-kable(model_1$ei.table)
-```
-
-```{r echo = F}
-      withMathJax(HTML(paste(
-                 params$dependent1,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
-                 round(model_1$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model_1$ei.table[2,3]-model_1$ei.table[1,3],3),".", "<br/><br/>")))
-```
-
-```{r echo = F}
-kable(model_2$ei.table)
-```
-
-```{r echo = F}
-      withMathJax(HTML(paste(params$dependent2,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/> Note that \\(\\LARGE\\beta_0 = \\)",
-                 round(model_2$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model_2$ei.table[2,3]-model_2$ei.table[1,3],3),".", "<br/> <br/>")))
-```
 
 
