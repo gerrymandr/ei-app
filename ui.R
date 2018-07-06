@@ -9,8 +9,7 @@ library(shinycssloaders)
 dashboardPage(
   
   dashboardHeader(title = "Ecological Inference Analysis",
-                          titleWidth=285
-                  ),
+                          titleWidth=285),
 
   dashboardSidebar(width=285,
       fileInput('file1', 'Upload CSV file', accept=c(
@@ -21,16 +20,18 @@ dashboardPage(
        
       uiOutput('numCandidates'),
         tags$hr(),
-      uiOutput('dependent1'),
-      uiOutput('candName1'),
-        tags$hr(),
-      uiOutput('dependent2'),
-      uiOutput('candName2'),
-        tags$hr(),
-      uiOutput('dependent3'),
-      uiOutput('candName3'),
-      # uiOutput('candDataPrompts'),
-      # uiOutput('candNamePrompts'),
+      
+      # uiOutput('dependent1'), ##testing prompts
+      # uiOutput('candName1'),
+      #   tags$hr(),
+      # uiOutput('dependent2'),
+      # uiOutput('candName2'),
+      #   tags$hr(),
+      # uiOutput('dependent3'),
+      # uiOutput('candName3'),
+      
+      uiOutput('candDataPrompts'),
+      uiOutput('candNamePrompts'),
      
       uiOutput('independent'),
       uiOutput('raceVar'),
@@ -103,14 +104,15 @@ dashboardPage(
     ),
     
     column(width=9,style = "background-color:white;",
-           downloadButton('report', 'Output PDF'),
+           
            # downloadButton('template', "Expert Witness Report Template (.docx)"),
            # downloadButton('templatePages', "Expert Witness Report Template (.pages)"),
            htmlOutput("welcome"),
+           
           tags$head(tags$style(type="text/css", "
                                   #loadmessage {
                                   position: fixed;
-                                  top: 0px;
+                                  bottom: 0px;
                                   left: 0px;
                                   width: 100%;
                                   padding: 5px 0px 5px 0px;
@@ -118,7 +120,7 @@ dashboardPage(
                                   font-weight: bold;
                                   font-size: 100%;
                                   color: #000000;
-                                  background-color: #CCFF66;
+                                  background-color: #FFFF66;
                                   z-index: 105;
                                   }
                                   ")),
