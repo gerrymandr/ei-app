@@ -417,6 +417,8 @@ shinyServer(function(input, output, session) {
                                       tot.votes = input$tot.votes, 
                                       candidate1 = input$candidate1,
                                       candidate2 = input$candidate2,
+                                      candidate3 = input$candidate3,
+                                      candidate4 = input$candidate4,
                                       input_slider = input$slider,
                                       racename = input$racename,
                                       numCands = input$numCandidates),
