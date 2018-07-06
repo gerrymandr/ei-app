@@ -107,7 +107,6 @@ dashboardPage(
            
            # downloadButton('template', "Expert Witness Report Template (.docx)"),
            # downloadButton('templatePages', "Expert Witness Report Template (.pages)"),
-           htmlOutput("welcome"),
            
           tags$head(tags$style(type="text/css", "
                                   #loadmessage {
@@ -126,7 +125,10 @@ dashboardPage(
                                   ")),
              conditionalPanel(condition="$('html').hasClass('shiny-busy')",
                               tags$div("Calculating...",id="loadmessage")),
-           uiOutput('mytabs')
+          downloadButton('report', 'Output PDF', class='outputpdf'), 
+          tags$head(tags$style(type="text/css", ".outputpdf {float:right; top:0px}")),
+          htmlOutput("welcome"),
+          uiOutput('mytabs')
            # tabBox(id = "tabs",
            #   width=NULL, side='right', height=NULL,
            #   selected='Candidate 1 Figures',
