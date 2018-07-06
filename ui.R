@@ -9,8 +9,7 @@ library(shinycssloaders)
 dashboardPage(
   
   dashboardHeader(title = "Ecological Inference Analysis",
-                          titleWidth=285
-                  ),
+                          titleWidth=285),
 
   dashboardSidebar(width=285,
       fileInput('file1', 'Upload CSV file', accept=c(
@@ -21,16 +20,18 @@ dashboardPage(
        
       uiOutput('numCandidates'),
         tags$hr(),
-      uiOutput('dependent1'),
-      uiOutput('candName1'),
-        tags$hr(),
-      uiOutput('dependent2'),
-      uiOutput('candName2'),
-        tags$hr(),
-      uiOutput('dependent3'),
-      uiOutput('candName3'),
-      # uiOutput('candDataPrompts'),
-      # uiOutput('candNamePrompts'),
+      
+      # uiOutput('dependent1'), ##testing prompts
+      # uiOutput('candName1'),
+      #   tags$hr(),
+      # uiOutput('dependent2'),
+      # uiOutput('candName2'),
+      #   tags$hr(),
+      # uiOutput('dependent3'),
+      # uiOutput('candName3'),
+      
+      uiOutput('candDataPrompts'),
+      uiOutput('candNamePrompts'),
      
       uiOutput('independent'),
       uiOutput('raceVar'),
@@ -102,12 +103,32 @@ dashboardPage(
            )  
     ),
     
-    column(width=9,
-           downloadButton('report', 'Output PDF'),
+    column(width=9,style = "background-color:white;",
+           
            # downloadButton('template', "Expert Witness Report Template (.docx)"),
            # downloadButton('templatePages', "Expert Witness Report Template (.pages)"),
-           htmlOutput("welcome"),
-           uiOutput('mytabs')
+           
+          tags$head(tags$style(type="text/css", "
+                                  #loadmessage {
+                                  position: fixed;
+                                  bottom: 0px;
+                                  left: 0px;
+                                  width: 100%;
+                                  padding: 5px 0px 5px 0px;
+                                  text-align: center;
+                                  font-weight: bold;
+                                  font-size: 100%;
+                                  color: #000000;
+                                  background-color: #FFFF66;
+                                  z-index: 105;
+                                  }
+                                  ")),
+             conditionalPanel(condition="$('html').hasClass('shiny-busy')",
+                              tags$div("Calculating...",id="loadmessage")),
+          downloadButton('report', 'Output PDF', class='outputpdf'), 
+          tags$head(tags$style(type="text/css", ".outputpdf {float:right; top:0px}")),
+          htmlOutput("welcome"),
+          uiOutput('mytabs')
            # tabBox(id = "tabs",
            #   width=NULL, side='right', height=NULL,
            #   selected='Candidate 1 Figures',
