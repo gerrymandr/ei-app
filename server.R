@@ -43,10 +43,10 @@ shinyServer(function(input, output, session) {
     textInput('electionsource', 'Source for elections data:', placeholder='For graph citation')
   })
   
-  output$source2 <- renderUI({ #Prompt for source of elections data
+  output$source2 <- renderUI({ #Prompt for source of demographic data
     df <- filedata()
     if (is.null(df)) return(NULL)
-    textInput('electionsource', 'Source for elections data:', placeholder='For graph citation')
+    textInput('demsource', 'Source for demographic data:', placeholder='For graph citation')
   })
   
   # output$candDataPrompts <- renderUI({
@@ -417,7 +417,8 @@ shinyServer(function(input, output, session) {
                                       candidate1 = input$candidate1,
                                       candidate2 = input$candidate2,
                                       input_slider = input$slider,
-                                      racename = input$racename),
+                                      racename = input$racename,
+                                      numCands = input$numCandidates),
                         envir = new.env(parent = globalenv())
       )
     }
