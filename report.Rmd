@@ -160,11 +160,17 @@ model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slide
 for (i in 1: params$numCands) {
 cat('\\section{$Candidate ', i, '$}')
 cat('\\subsection{$Table$}')
-cat('First, we compare predictions from three different models for', paste0("params$candidate",i), '\n')
+if (i == 1) {cat('First, we compare predictions from three different models for', params$candidate1, '\n')}
+if (i == 2) {cat('First, we compare predictions from three different models for', params$candidate2, '\n')}
+if (i == 3) {cat('First, we compare predictions from three different models for', params$candidate3, '\n')}
+if (i == 4) {cat('First, we compare predictions from three different models for', params$candidate4, '\n')}
 cat('vote share given demographic and total vote data' , '\n')  
 kable(model_1$ei.table)
 cat('\\subsection{$Goodmans Ecological Regression$}')
-cat('Next, we plot votes for', paste0("params$candidate",i), 'by the proportion of the population', '\n')
+if (i ==  1) {cat('Next, we plot votes for', params$candidate1, 'by the proportion of the population', '\n')}
+if (i ==  2) {cat('Next, we plot votes for', params$candidate2, 'by the proportion of the population', '\n')}
+if (i ==  3) {cat('Next, we plot votes for', params$candidate3, 'by the proportion of the population', '\n')}
+if (i ==  4) {cat('Next, we plot votes for', params$candidate4, 'by the proportion of the population', '\n')}
 cat(params$racename, "according to Goodman's regression predictions", '\n')
 cat("We use the following equation: ", '\n')
 withMathJax(HTML(paste(
@@ -172,9 +178,15 @@ withMathJax(HTML(paste(
                  round(model_1$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model_1$ei.table[2,3]-model_1$ei.table[1,3],3),".", "<br/><br/>")))
 plot(model_1$gr.plot)
 cat('\\subsection{$Ecological Inference$}')
-cat("Finally, we calculate ecological inference predictions for", paste0("params$candidate",i), "\n")
+if (i == 1) {cat("Finally, we calculate ecological inference predictions for", params$candidate1, "\n")}
+if (i == 2) {cat("Finally, we calculate ecological inference predictions for", params$candidate2, "\n")}
+if (i == 3) {cat("Finally, we calculate ecological inference predictions for", params$candidate3, "\n")}
+if (i == 4) {cat("Finally, we calculate ecological inference predictions for", params$candidate4, "\n")}
 cat("'s vote share and plot them with credible intervals. If the intervals overlap,", "\n")
-cat("we cannot conclude that there was racially polarized voting for", paste0("params$candidate",i), ". \n")
+if (i == 1) {cat("we cannot conclude that there was racially polarized voting for", params$candidate1, ". \n")}
+if (i == 2) {cat("we cannot conclude that there was racially polarized voting for", params$candidate2, ". \n")}
+if (i == 3) {cat("we cannot conclude that there was racially polarized voting for", params$candidate3, ". \n")}
+if (i == 4) {cat("we cannot conclude that there was racially polarized voting for", params$candidate4, ". \n")}
 plot(model_1$ei.plot)
 cat("\n")
 }
