@@ -6,6 +6,7 @@ params:
     independent: NA
     dependent1: NA
     dependent2: NA
+    dependent3: NA
     tot.votes: NA
     candidate1: NA
     candidate2: NA
@@ -135,6 +136,7 @@ tot.votes <-as.numeric(as.character(params$tot.votes))
 dependent2 <-as.numeric(as.character(params$dependent2))
 candidate1 <-as.character(params$candidate1)
 candidate2 <-as.character(params$candidate2)
+candidate2 <-as.character(params$candidate2)
 racename <-as.character(params$racename)
 input_slider <- as.numeric(as.character(params$input_slider))
 
@@ -153,6 +155,8 @@ tot.votes <- fileData[,tot]
 ```{r echo = F, results = "hide", message = FALSE}
 model_1 <- run_model(independent, dependent1, tot.votes, candidate1, input_slider, racename)
 model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slider, racename)
+model_3 <- run_model(independent, dependent3, tot.votes, candidate3, input_slider, racename)
+
 ```
 
 
@@ -162,20 +166,20 @@ cat('\\section{$Candidate ', i, '$}')
 cat('\\subsection{$Table$}')
 cat('First, we compare predictions from three different models for', paste0("params$candidate",i), '\n')
 cat('vote share given demographic and total vote data' , '\n')  
-kable(model_1$ei.table)
-cat('\\subsection{$Goodmans Ecological Regression$}')
+kable(paste0("model_",i)$ei.table)
+# cat('\\subsection{$Goodmans Ecological Regression$}')
 cat('Next, we plot votes for', paste0("params$candidate",i), 'by the proportion of the population', '\n')
 cat(params$racename, "according to Goodman's regression predictions", '\n')
 cat("We use the following equation: ", '\n')
 withMathJax(HTML(paste(
-                 params$dependent1,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
-                 round(model_1$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model_1$ei.table[2,3]-model_1$ei.table[1,3],3),".", "<br/><br/>")))
-plot(model_1$gr.plot)
+                 paste0("params$dependent",i),"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
+                 round(paste0("model_",i)$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(paste0("model_",i)$ei.table[2,3]-paste0("model_",i)$ei.table[1,3],3),".", "<br/><br/>")))
+plot(paste0("model_",i)$gr.plot)
 cat('\\subsection{$Ecological Inference$}')
 cat("Finally, we calculate ecological inference predictions for", paste0("params$candidate",i), "\n")
 cat("'s vote share and plot them with credible intervals. If the intervals overlap,", "\n")
 cat("we cannot conclude that there was racially polarized voting for", paste0("params$candidate",i), ". \n")
-plot(model_1$ei.plot)
+plot(paste0("model_",i)$ei.plot)
 cat("\n")
 }
 ```

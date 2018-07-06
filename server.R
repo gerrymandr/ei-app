@@ -413,6 +413,7 @@ shinyServer(function(input, output, session) {
                                       independent = input$independent, 
                                       dependent1 = input$dependent1, 
                                       dependent2 = input$dependent2,
+                                      dependent3 = input$dependent3,
                                       tot.votes = input$tot.votes, 
                                       candidate1 = input$candidate1,
                                       candidate2 = input$candidate2,
