@@ -21,14 +21,14 @@ dashboardPage(
       uiOutput('numCandidates'),
         tags$hr(),
       
-      # uiOutput('dependent1'), ##testing prompts
-      # uiOutput('candName1'),
-      #   tags$hr(),
-      # uiOutput('dependent2'),
-      # uiOutput('candName2'),
-      #   tags$hr(),
-      # uiOutput('dependent3'),
-      # uiOutput('candName3'),
+      uiOutput('dependent1'), ##testing prompts
+      uiOutput('candName1'),
+        tags$hr(),
+      uiOutput('dependent2'),
+      uiOutput('candName2'),
+        tags$hr(),
+      uiOutput('dependent3'),
+      uiOutput('candName3'),
       
       uiOutput('candDataPrompts'),
       uiOutput('candNamePrompts'),
