@@ -51,81 +51,81 @@ shinyServer(function(input, output, session) {
   })
   
   
-  # Prompt for candidate names and data
-  output$candDataPrompts <- renderUI({
+  # # Prompt for candidate names and data
+  # output$candDataPrompts <- renderUI({
+  #   df <- filedata()
+  #   if (is.null(df)) return(NULL)
+  #   if (is.null(input$numCandidates)) return(NULL)
+  #   numCandidates <- as.integer(input$numCandidates)
+  #   items=names(df)
+  #   names(items)=items
+  # 
+  #   lapply(1:numCandidates, function(i) {
+  #     varName1 <- paste("dependent",i, sep = "")
+  #     text1 <- paste("Candidate ", i, " data: ", sep= "")
+  #     selectInput(varName1,text1,items)
+  #   })
+  # 
+  # })
+  # 
+  # output$candNamePrompts <- renderUI({
+  #   df <- filedata()
+  #   if (is.null(df)) return(NULL)
+  #   if (is.null(input$numCandidates)) return(NULL)
+  #   numCandidates <- as.integer(input$numCandidates)
+  #   items=names(df)
+  #   names(items)=items
+  # 
+  #   lapply(1:numCandidates, function(i) {
+  #     varName2 <- paste("candidate",i, sep = "")
+  #     text2 <- paste("Name of candidate ", i, ": ", sep= "")
+  #     textInput(varName2, text2)
+  #   })
+  # })
+
+  
+  # Defaults for testing:
+  output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)
     df <- filedata()
     if (is.null(df)) return(NULL)
-    if (is.null(input$numCandidates)) return(NULL)
-    numCandidates <- as.integer(input$numCandidates)
     items=names(df)
     names(items)=items
-
-    lapply(1:numCandidates, function(i) {
-      varName1 <- paste("dependent",i, sep = "")
-      text1 <- paste("Candidate ", i, " data: ", sep= "")
-      selectInput(varName1,text1,items)
-    })
-
+    selectInput('dependent1','Candidate 1 data:',items, selected='pct_for_hardy2')
   })
-  
-  output$candNamePrompts <- renderUI({
+
+  output$candName1 <- renderUI({ #Prompt for candidate 1 name
     df <- filedata()
     if (is.null(df)) return(NULL)
-    if (is.null(input$numCandidates)) return(NULL)
-    numCandidates <- as.integer(input$numCandidates)
-    items=names(df)
-    names(items)=items
-
-    lapply(1:numCandidates, function(i) {
-      varName2 <- paste("candidate",i, sep = "")
-      text2 <- paste("Name of candidate ", i, ": ", sep= "")
-      textInput(varName2, text2)
-    })
+    textInput('candidate1', 'Name of candidate 1:', value='hardy')
   })
 
-  
-  ## Defaults for testing:
-  # output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)
-  #   df <- filedata()
-  #   if (is.null(df)) return(NULL)
-  #   items=names(df)
-  #   names(items)=items
-  #   selectInput('dependent1','Candidate 1 data:',items, selected='pct_for_hardy2')
-  # })
-  # 
-  # output$candName1 <- renderUI({ #Prompt for candidate 1 name
-  #   df <- filedata()
-  #   if (is.null(df)) return(NULL)
-  #   textInput('candidate1', 'Name of candidate 1:', value='hardy')
-  # })
-  # 
-  # output$dependent2 <- renderUI({ #Prompt for candidate 2 data (column name)
-  #   df <- filedata()
-  #   if (is.null(df)) return(NULL)
-  #   items=names(df)
-  #   names(items)=items
-  #   selectInput('dependent2','Candidate 2 data:',items, selected='pct_for_kolstad2')
-  # })
-  # 
-  # output$candName2 <- renderUI({ #Prompt for candidate 2 name
-  #   df <- filedata()
-  #   if (is.null(df)) return(NULL)
-  #   textInput('candidate2', 'Name of candidate 2:', value='kolstad')
-  # })
-  # 
-  # output$dependent3 <- renderUI({ #Prompt for candidate 2 data (column name)
-  #   df <- filedata()
-  #   if (is.null(df)) return(NULL)
-  #   items=names(df)
-  #   names(items)=items
-  #   selectInput('dependent3','Candidate 3 data:',items, selected='pct_for_nadeem2')
-  # })
-  # 
-  # output$candName3 <- renderUI({ #Prompt for candidate 2 name
-  #   df <- filedata()
-  #   if (is.null(df)) return(NULL)
-  #   textInput('candidate3', 'Name of candidate 3:', value='nadeem')
-  # })
+  output$dependent2 <- renderUI({ #Prompt for candidate 2 data (column name)
+    df <- filedata()
+    if (is.null(df)) return(NULL)
+    items=names(df)
+    names(items)=items
+    selectInput('dependent2','Candidate 2 data:',items, selected='pct_for_kolstad2')
+  })
+
+  output$candName2 <- renderUI({ #Prompt for candidate 2 name
+    df <- filedata()
+    if (is.null(df)) return(NULL)
+    textInput('candidate2', 'Name of candidate 2:', value='kolstad')
+  })
+
+  output$dependent3 <- renderUI({ #Prompt for candidate 2 data (column name)
+    df <- filedata()
+    if (is.null(df)) return(NULL)
+    items=names(df)
+    names(items)=items
+    selectInput('dependent3','Candidate 3 data:',items, selected='pct_for_nadeem2')
+  })
+
+  output$candName3 <- renderUI({ #Prompt for candidate 2 name
+    df <- filedata()
+    if (is.null(df)) return(NULL)
+    textInput('candidate3', 'Name of candidate 3:', value='nadeem')
+  })
   
   
   output$independent <- renderUI({ #Prompt for demographic data
