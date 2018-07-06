@@ -134,9 +134,12 @@ independent <-as.numeric(as.character(params$independent))
 dependent1 <-as.numeric(as.character(params$dependent1))
 tot.votes <-as.numeric(as.character(params$tot.votes))
 dependent2 <-as.numeric(as.character(params$dependent2))
+dependent3 <- as.numeric(as.character(params$dependent3))
+dependent4 <- as.numeric(as.character(params$dependent4))
 candidate1 <-as.character(params$candidate1)
 candidate2 <-as.character(params$candidate2)
-candidate2 <-as.character(params$candidate2)
+candidate3 <-as.character(params$candidate3)
+candidate4 <-as.character(params$candidate4)
 racename <-as.character(params$racename)
 input_slider <- as.numeric(as.character(params$input_slider))
 
@@ -144,18 +147,23 @@ input_slider <- as.numeric(as.character(params$input_slider))
 ind <- which(colnames(fileData) == params$independent)
 dep1 <- which(colnames(fileData) == params$dependent1)
 dep2 <- which(colnames(fileData) == params$dependent2)
+dep3 <- which(colnames(fileData) == params$dependent3)
+dep4 <- which(colnames(fileData) == params$dependent4)
 tot <- which(colnames(fileData) == params$tot.votes)
 
 independent <- fileData[,ind]
 dependent1 <- fileData[,dep1]
 dependent2 <- fileData[,dep2]
+dependent3 <- fileData[,dep3]
+dependent4 <- fileData[,dep4]
 tot.votes <- fileData[,tot]
 ```
 
 ```{r echo = F, results = "hide", message = FALSE}
-model_1 <- run_model(independent, dependent1, tot.votes, candidate1, input_slider, racename)
-model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slider, racename)
-model_3 <- run_model(independent, dependent3, tot.votes, candidate3, input_slider, racename)
+if (params$numCands >= 1) {model_1 <- run_model(independent, dependent1, tot.votes, candidate1, input_slider, racename)}
+if (params$numCands >= 2) {model_2 <- run_model(independent, dependent2, tot.votes, candidate2, input_slider, racename)}
+if (params$numCands >= 3) {model_3 <- run_model(independent, dependent3, tot.votes, candidate3, input_slider, racename)}
+if (params$numCands == 4) {model_4 <- run_model(independent, dependent4, tot.votes, candidate4, input_slider, racename)}
 
 ```
 
@@ -169,40 +177,29 @@ if (i == 2) {cat('First, we compare predictions from three different models for'
 if (i == 3) {cat('First, we compare predictions from three different models for', params$candidate3, '\n')}
 if (i == 4) {cat('First, we compare predictions from three different models for', params$candidate4, '\n')}
 cat('vote share given demographic and total vote data' , '\n')  
-<<<<<<< HEAD
 kable(model_1$ei.table)
 cat('\\subsection{$Goodmans Ecological Regression$}')
 if (i ==  1) {cat('Next, we plot votes for', params$candidate1, 'by the proportion of the population', '\n')}
 if (i ==  2) {cat('Next, we plot votes for', params$candidate2, 'by the proportion of the population', '\n')}
 if (i ==  3) {cat('Next, we plot votes for', params$candidate3, 'by the proportion of the population', '\n')}
 if (i ==  4) {cat('Next, we plot votes for', params$candidate4, 'by the proportion of the population', '\n')}
-=======
-kable(paste0("model_",i)$ei.table)
-# cat('\\subsection{$Goodmans Ecological Regression$}')
-cat('Next, we plot votes for', paste0("params$candidate",i), 'by the proportion of the population', '\n')
->>>>>>> 6b27adecb224bc4f83f74a310361e50f60ad430b
 cat(params$racename, "according to Goodman's regression predictions", '\n')
 cat("We use the following equation: ", '\n')
-withMathJax(HTML(paste(
-                 paste0("params$dependent",i),"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
-                 round(paste0("model_",i)$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(paste0("model_",i)$ei.table[2,3]-paste0("model_",i)$ei.table[1,3],3),".", "<br/><br/>")))
-plot(paste0("model_",i)$gr.plot)
+      withMathJax(HTML(paste(
+                 params$dependent1,"=\\(\\LARGE\\beta_0 + \\beta_1\\)",params$independent, ".", "<br/><br/>Note that \\(\\LARGE\\beta_0 = \\)",
+                 round(model_1$ei.table[1,3],3), "and \\(\\LARGE \\beta_1 =\\)", round(model_1$ei.table[2,3]-model_1$ei.table[1,3],3),".", "<br/><br/>")))
+plot(model_1)$gr.plot
 cat('\\subsection{$Ecological Inference$}')
 if (i == 1) {cat("Finally, we calculate ecological inference predictions for", params$candidate1, "\n")}
 if (i == 2) {cat("Finally, we calculate ecological inference predictions for", params$candidate2, "\n")}
 if (i == 3) {cat("Finally, we calculate ecological inference predictions for", params$candidate3, "\n")}
 if (i == 4) {cat("Finally, we calculate ecological inference predictions for", params$candidate4, "\n")}
 cat("'s vote share and plot them with credible intervals. If the intervals overlap,", "\n")
-<<<<<<< HEAD
 if (i == 1) {cat("we cannot conclude that there was racially polarized voting for", params$candidate1, ". \n")}
 if (i == 2) {cat("we cannot conclude that there was racially polarized voting for", params$candidate2, ". \n")}
 if (i == 3) {cat("we cannot conclude that there was racially polarized voting for", params$candidate3, ". \n")}
 if (i == 4) {cat("we cannot conclude that there was racially polarized voting for", params$candidate4, ". \n")}
 plot(model_1$ei.plot)
-=======
-cat("we cannot conclude that there was racially polarized voting for", paste0("params$candidate",i), ". \n")
-plot(paste0("model_",i)$ei.plot)
->>>>>>> 6b27adecb224bc4f83f74a310361e50f60ad430b
 cat("\n")
 }
 ```
