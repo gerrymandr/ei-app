@@ -51,82 +51,85 @@ shinyServer(function(input, output, session) {
   })
   
   
-  ## Prompt for names and data for given number of candidates
-  # output$candDataPrompts <- renderUI({
-  #   df <- filedata()
-  #   if (is.null(df)) return(NULL)
-  #   if (is.null(input$numCandidates)) return(NULL)
-  #   numCandidates <- as.integer(input$numCandidates)
-  #   items=names(df)
-  #   names(items)=items
-  # 
-  #   lapply(1:numCandidates, function(i) {
-  #     varName1 <- paste("dependent",i, sep = "")
-  #     text1 <- paste("Candidate ", i, " data: ", sep= "")
-  #     selectInput(varName1,text1,items)
-  #   })
-  # 
-  # })
-  # 
-  # output$candNamePrompts <- renderUI({
-  #   df <- filedata()
-  #   if (is.null(df)) return(NULL)
-  #   if (is.null(input$numCandidates)) return(NULL)
-  #   numCandidates <- as.integer(input$numCandidates)
-  #   items=names(df)
-  #   names(items)=items
-  # 
-  #   lapply(1:numCandidates, function(i) {
-  #     varName2 <- paste("candidate",i, sep = "")
-  #     text2 <- paste("Name of candidate ", i, ": ", sep= "")
-  #     textInput(varName2, text2)
-  #   })
-  # })
-
-  
-  # Non-reactive candidate prompts with defaults for testing:
-  output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)
+  # LOOPING THROUGH CANDIDATES STARTS HERE -- COMMENT TO USE DEFAULTS
+  # Prompt for names and data for given number of candidates
+  output$candDataPrompts <- renderUI({
     df <- filedata()
     if (is.null(df)) return(NULL)
+    if (is.null(input$numCandidates)) return(NULL)
+    numCandidates <- as.integer(input$numCandidates)
     items=names(df)
     names(items)=items
-    selectInput('dependent1','Candidate 1 data:',items, selected='pct_for_hardy2')
-  })
-
-  output$candName1 <- renderUI({ #Prompt for candidate 1 name
-    df <- filedata()
-    if (is.null(df)) return(NULL)
-    textInput('candidate1', 'Name of candidate 1:', value='hardy')
-  })
-
-  output$dependent2 <- renderUI({ #Prompt for candidate 2 data (column name)
-    df <- filedata()
-    if (is.null(df)) return(NULL)
-    items=names(df)
-    names(items)=items
-    selectInput('dependent2','Candidate 2 data:',items, selected='pct_for_kolstad2')
-  })
-
-  output$candName2 <- renderUI({ #Prompt for candidate 2 name
-    df <- filedata()
-    if (is.null(df)) return(NULL)
-    textInput('candidate2', 'Name of candidate 2:', value='kolstad')
-  })
-
-  output$dependent3 <- renderUI({ #Prompt for candidate 2 data (column name)
-    df <- filedata()
-    if (is.null(df)) return(NULL)
-    items=names(df)
-    names(items)=items
-    selectInput('dependent3','Candidate 3 data:',items, selected='pct_for_nadeem2')
-  })
-
-  output$candName3 <- renderUI({ #Prompt for candidate 2 name
-    df <- filedata()
-    if (is.null(df)) return(NULL)
-    textInput('candidate3', 'Name of candidate 3:', value='nadeem')
+    
+    lapply(1:numCandidates, function(i) {
+      varName1 <- paste("dependent",i, sep = "")
+      text1 <- paste("Candidate ", i, " data: ", sep= "")
+      selectInput(varName1,text1,items)
+    })
   })
   
+  output$candNamePrompts <- renderUI({
+    df <- filedata()
+    if (is.null(df)) return(NULL)
+    if (is.null(input$numCandidates)) return(NULL)
+    numCandidates <- as.integer(input$numCandidates)
+    items=names(df)
+    names(items)=items
+    
+    lapply(1:numCandidates, function(i) {
+      varName2 <- paste("candidate",i, sep = "")
+      text2 <- paste("Name of candidate ", i, ": ", sep= "")
+      textInput(varName2, text2)
+    })
+  })
+  # LOOPING THROUGH CANDIDATES ENDS HERE -- COMMENT TO USE DEFAULTS
+  
+  
+  
+  # # DEFAULTS TESTING SECTION STARTS HERE
+  # # Non-reactive candidate prompts with defaults for testing:
+  # output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)
+  #   df <- filedata()
+  #   if (is.null(df)) return(NULL)
+  #   items=names(df)
+  #   names(items)=items
+  #   selectInput('dependent1','Candidate 1 data:',items, selected='pct_for_hardy2')
+  # })
+  # 
+  # output$candName1 <- renderUI({ #Prompt for candidate 1 name
+  #   df <- filedata()
+  #   if (is.null(df)) return(NULL)
+  #   textInput('candidate1', 'Name of candidate 1:', value='hardy')
+  # })
+  # 
+  # output$dependent2 <- renderUI({ #Prompt for candidate 2 data (column name)
+  #   df <- filedata()
+  #   if (is.null(df)) return(NULL)
+  #   items=names(df)
+  #   names(items)=items
+  #   selectInput('dependent2','Candidate 2 data:',items, selected='pct_for_kolstad2')
+  # })
+  # 
+  # output$candName2 <- renderUI({ #Prompt for candidate 2 name
+  #   df <- filedata()
+  #   if (is.null(df)) return(NULL)
+  #   textInput('candidate2', 'Name of candidate 2:', value='kolstad')
+  # })
+  # 
+  # output$dependent3 <- renderUI({ #Prompt for candidate 2 data (column name)
+  #   df <- filedata()
+  #   if (is.null(df)) return(NULL)
+  #   items=names(df)
+  #   names(items)=items
+  #   selectInput('dependent3','Candidate 3 data:',items, selected='pct_for_nadeem2')
+  # })
+  # 
+  # output$candName3 <- renderUI({ #Prompt for candidate 2 name
+  #   df <- filedata()
+  #   if (is.null(df)) return(NULL)
+  #   textInput('candidate3', 'Name of candidate 3:', value='nadeem')
+  # })
+  # # DEFAULTS TESTING SECTION ENDS HERE 
   
   output$independent <- renderUI({ #Prompt for demographic data
     df <- filedata()
@@ -221,8 +224,8 @@ shinyServer(function(input, output, session) {
       scale_color_manual('Homogeneous precincts', breaks=c(0,1), values=c('Gray', 'Red'), labels=c('No', paste('Most extreme ', input$slider,'%', sep=''))) +
       geom_hline(yintercept=0.5, linetype=2, colour='lightgray') +
       theme_bw() + ggtitle("Goodman's Ecological Regression") + labs(x = paste('% population ', input$racename, sep=''),
-      y= paste('% vote for ', candidate, sep=''), 
-      caption = paste('Election data from', input$electionSource, 'and demographic data from', input$demographicSource, sep = ' '))
+                                                                     y= paste('% vote for ', candidate, sep=''), 
+                                                                     caption = paste('Election data from', input$electionSource, 'and demographic data from', input$demographicSource, sep = ' '))
     
     # generates ei table
     ei.table <- as.data.frame(t(edf.t))
@@ -237,19 +240,17 @@ shinyServer(function(input, output, session) {
     #df.ei$EI.est.white <- eiread(ei.out, 'betaw')
     
     # generates ei dotplot
-    
     ei.plot.df <- ei.table[,c(1,4,5)]
     names(ei.plot.df) <- c('race', 'ei.est', 'ei.se')
     
     ei.plot <- ggplot(ei.plot.df, aes(x=ei.est, y=1, col=as.factor(race))) +
       geom_hline(yintercept=1, col='black') +
       geom_point(size=6, shape=3) + labs(y=(''), x = paste('Support for candidate ', candidate, sep=''), 
-      caption = paste('Election data from', input$electionSource, 'and demographic data from', input$demographicSource, sep = ' '))  + scale_x_continuous(limits=c(-.25,1.25)) +
+                                         caption = paste('Election data from', input$electionSource, 'and demographic data from', input$demographicSource, sep = ' '))  + scale_x_continuous(limits=c(-.25,1.25)) +
       scale_y_continuous(limits=c(0,2), breaks=c(0,0.5,1,1.5,2), labels=c('','','','','')) +
       scale_color_manual('Race', values=c('gray40', 'midnightblue'), labels=c(paste('All but ', input$racename, sep=''), input$racename)) +
       geom_errorbarh(aes(xmin=(ei.est) - 2*(ei.se), xmax=(ei.est) + 2*(ei.se), height=0.3), size=2, alpha=0.7, height=0.3) +
       theme_bw() + ggtitle('Ecological Inference')
-    
     
     list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
   }
@@ -264,27 +265,22 @@ shinyServer(function(input, output, session) {
       candNames <- c(candNames, input[[paste("candidate",i,sep="")]])
     }
     list(cands = cands, candNames = candNames, numCandidates = numCandidates)
-    
   })
   
-  ##Iterates through given number of candidates to run analysis for each candidate and save results
-  ## in the object "models"
+  ##Iterates through given number of candidates to run analysis for each candidate and save results in the object "models"
   models <- eventReactive(input$action, {
     models <- list()
     for(i in 1:dependents()$numCandidates){
       #name = paste("model",i, sep = "")
       new <- run_model(input$independent, dependents()$cands[i],
-                                   input$tot.votes, dependents()$candNames[i])
+                       input$tot.votes, dependents()$candNames[i])
       models[[i]] <- new
     }
     models
   })
   
-  
   ##Generate tables for candidates
-  
   observeEvent(input$action, {
-    
     lapply(1:input$numCandidates, function(i) {
       output[[paste0('est', i)]] <- renderTable({
         models()[[i]]$ei.table}, align='c', digits=3)
@@ -303,20 +299,20 @@ shinyServer(function(input, output, session) {
       output[[paste0('ei.bounds', i)]] <- renderPlot({
         models()[[i]]$ei.plot
       }, width=650, height=200)
-      })
     })
-    
+  })
+  
   
   ##Explanation of table
   observeEvent(input$action,{
     lapply(1:input$numCandidates, function(i) {
       output[[paste0('est_expl', i)]] <- renderUI({
         HTML(paste0("First, we compare predictions from three different models for ",input[[paste0('candidate',i)]],
-                   "'s vote share given demographic and total vote data.", "<br/>","<br/>"))
+                    "'s vote share given demographic and total vote data.", "<br/>","<br/>"))
       })
     })
-  
-  ##Explanations of Goodman plots
+    
+    ##Explanations of Goodman plots
     lapply(1:input$numCandidates, function(i) {
       output[[paste0('goodman_expl', i)]] <- renderUI({
         withMathJax(HTML(paste("<br/>","Next, we plot votes for", input[[paste0('candidate',i)]], "by the proportion of the population that is", 
@@ -326,7 +322,7 @@ shinyServer(function(input, output, session) {
       })
     })
     
-  ##Explanations of EI bounds plots
+    ##Explanations of EI bounds plots
     lapply(1:input$numCandidates, function(i) {
       output[[paste0('bounds_expl', i)]] <- renderUI({
         HTML(paste("<br/>","Finally, we calculate ecological inference predictions for",input[[paste0('candidate',i)]], "'s vote share and plot them with credible intervals. These credible intervals
@@ -336,7 +332,7 @@ shinyServer(function(input, output, session) {
                    this may be evidence to suggest racially polarized voting.", "<br/>","<br/>"))      })
     })
   })
-
+  
   
   output$ei.compare <- renderTable({
     filedata()
@@ -377,8 +373,10 @@ shinyServer(function(input, output, session) {
   })
   
   output$mytabs = renderUI({
+    #generates the appropriate number of tabs depending on the user inputted number of candidates
     if (is.null(input$file1)){
       output$welcome <- renderUI({
+        #generates the welcome screen
         req(is.null(input$file1)) # require that the input is null
         HTML(paste("<br/><br/><br/><br/><br/><br/>", tags$h2(tags$b("Welcome"), align="center"),
                    tags$h5(tags$i("No data is currently loaded."), align="center"),
@@ -388,6 +386,7 @@ shinyServer(function(input, output, session) {
     req(input$numCandidates>0)
     nTabs = input$numCandidates
     myTabs = lapply(1: nTabs, function(i) {
+      #adds output files to the user generated number of tabs
       tabPanel(paste0("Candidate ",i), 
                htmlOutput(paste0("est_expl",i)),
                tableOutput(paste0("est",i)),
@@ -399,54 +398,36 @@ shinyServer(function(input, output, session) {
     myTabs[[nTabs + 1]] <- tabPanel('Data', div(style = 'overflow-x: scroll', tableOutput('ei.compare')))
     do.call(tabsetPanel, myTabs)
   })
-
+  
   observeEvent(input$action, {
-  output$report <- downloadHandler(
-    filename = "report.pdf",
-    
-    content = function(file) {
+    output$report <- downloadHandler(
+      filename = "report.pdf",
       
-      #copy report to temporary file
-      tempReport <- file.path(tempdir(), "report.Rmd")
-      file.copy("report.Rmd", tempReport, overwrite = TRUE)
-
-      # Knit the document, passing in the `params` list
-      rmarkdown::render(tempReport, output_file = file,
-                        params = list(file1 = input$file1,
-                                      independent = input$independent, 
-                                      dependent1 = input$dependent1, 
-                                      dependent2 = input$dependent2,
-                                      dependent3 = input$dependent3,
-                                      tot.votes = input$tot.votes, 
-                                      candidate1 = input$candidate1,
-                                      candidate2 = input$candidate2,
-                                      candidate3 = input$candidate3,
-                                      candidate4 = input$candidate4,
-                                      input_slider = input$slider,
-                                      racename = input$racename,
-                                      numCands = input$numCandidates),
-                        envir = new.env(parent = globalenv())
-      )
-    }
-  )
+      content = function(file) {
+        
+        #copy report to temporary file
+        tempReport <- file.path(tempdir(), "report.Rmd")
+        file.copy("report.Rmd", tempReport, overwrite = TRUE)
+        
+        # Knit the document, passing in the `params` list
+        rmarkdown::render(tempReport, output_file = file,
+                          params = list(file1 = input$file1,
+                                        independent = input$independent, 
+                                        dependent1 = input$dependent1, 
+                                        dependent2 = input$dependent2,
+                                        dependent3 = input$dependent3,
+                                        tot.votes = input$tot.votes, 
+                                        candidate1 = input$candidate1,
+                                        candidate2 = input$candidate2,
+                                        candidate3 = input$candidate3,
+                                        candidate4 = input$candidate4,
+                                        input_slider = input$slider,
+                                        racename = input$racename,
+                                        numCands = input$numCandidates),
+                          envir = new.env(parent = globalenv())
+        )
+      }
+    )
   })
-  
-  
-  
- # observeEvent(input$action, {
- #   if(input$numCandidates == 2) {
- #    insertTab(inputId = "tabs",
- #              tabPanel('Candidate 1 Figures', htmlOutput("welcome"), withSpinner(tableOutput('est1')),
- #                        htmlOutput("goodman_expl1"), plotOutput('goodman1'),
- #                        htmlOutput("bounds_expl1"), plotOutput('ei.bounds1')),
- #              tabPanel('Candidate 2 Figures', htmlOutput("est_expl2"), withSpinner(tableOutput('est2')),
- #                       htmlOutput("goodman_expl2"), plotOutput('goodman2'),
- #                       htmlOutput("bounds_expl2"), plotOutput('ei.bounds2')))
- #  }
- #  if (input$numCandidates > 2) {
- #   return(NULL)
- #  }
- #  })
-  
-  })
+})
 
