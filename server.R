@@ -51,7 +51,7 @@ shinyServer(function(input, output, session) {
   })
   
   
-  # # Prompt for candidate names and data
+  ## Prompt for names and data for given number of candidates
   # output$candDataPrompts <- renderUI({
   #   df <- filedata()
   #   if (is.null(df)) return(NULL)
@@ -84,7 +84,7 @@ shinyServer(function(input, output, session) {
   # })
 
   
-  # Defaults for testing:
+  # Non-reactive candidate prompts with defaults for testing:
   output$dependent1 <- renderUI({ #Prompt for candidate 1 data (column name)
     df <- filedata()
     if (is.null(df)) return(NULL)
@@ -161,9 +161,8 @@ shinyServer(function(input, output, session) {
     actionButton('action', ' Run', icon('refresh', lib='glyphicon'))
   })
   
-  
+  # Function that generates the table, goodman plot, and EI metric (with confidence plot)
   run_model <- function(independent, dependent, tot.votes, candidate){
-    # Function that generates the table, goodman plot, and EI metric (with confidence plot), given variables
     
     df <- filedata()[,c(independent, dependent, tot.votes)]
     names(df) <- c('x', 'y', 'z')
@@ -255,6 +254,7 @@ shinyServer(function(input, output, session) {
     list(gr.plot = gr.plot, ei.table = ei.table.final, ei.plot = ei.plot) 
   }
   
+  ##Object containing all candidate data
   dependents <- eventReactive(input$action, {
     numCandidates <- input$numCandidates
     cands <- c()
@@ -267,6 +267,8 @@ shinyServer(function(input, output, session) {
     
   })
   
+  ##Iterates through given number of candidates to run analysis for each candidate and save results
+  ## in the object "models"
   models <- eventReactive(input$action, {
     models <- list()
     for(i in 1:dependents()$numCandidates){
