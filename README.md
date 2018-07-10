@@ -20,5 +20,6 @@ Files:
 - waterbury.csv : sample data for Waterbury election results
 - server.R : R shiny file containing functions to run analysis and create plots
 - ui.R	: R shiny file creating user interface
+- www/userGuide.pdf : guide to using the app, including an example
 
-More information in the user guide and walkthrough.
+More information in the user guide.
