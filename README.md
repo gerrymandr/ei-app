@@ -4,8 +4,8 @@ uses a user inputted CSV file to run 2x2 Homogenous Precincts, Goodman's Regress
 UI.R and Server.R are default R Shiny files and we added a report.Rmd to generate a PDF report of results.
 
 Required to run analysis:
-- Precinct-level data on vote totals for a given election
-- Precinct-level demographic 
+- Precinct-level data on vote totals by candidate for a given election
+- Precinct-level demographic data
 
 Output:
 - Homogeneous precinct analysis results
