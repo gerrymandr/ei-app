@@ -1,7 +1,5 @@
 # ei-app
-An R Shiny app that allows the user to run ecological inference analysis to determine whether or not there was racially polarized voting in a particular election.
-uses a user inputted CSV file to run 2x2 Homogenous Precincts, Goodman's Regression and Ecological Inference.
-UI.R and Server.R are default R Shiny files and we added a report.Rmd to generate a PDF report of results.
+An R Shiny app that allows the user to run ecological inference 2x2 and nx2 analysis to determine whether or not there was racially polarized voting in a particular election.
 
 Required to run analysis:
 - Precinct-level data on vote totals by candidate for a given election
