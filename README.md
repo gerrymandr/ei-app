@@ -1,8 +1,8 @@
 # ei-app
-An R Shiny app that allows the user to run ecological inference 2x2 and nx2 analysis to determine whether or not there was racially polarized voting in a particular election.
+An R Shiny app that allows the user to run ecological inference 2x2 and nx2 analysis to determine whether or not there was racially polarized voting in a particular election. The app can be accessed on the web at https://vrdi.shinyapps.io/ei-app/.
 
 Required to run analysis:
-- Precinct-level data on vote totals by candidate for a given election
+- Precinct-level data on vote totals by candidate for a given election (as percentages)
 - Precinct-level demographic data
 
 Output:
